@@ -234,7 +234,8 @@ SetupPage {
                 anchors.left:   parent.left
                 anchors.right:  parent.right
                 wrapMode:       Text.WordWrap
-                text:           qsTr("Moving the sliders will cause the motors to spin. Make sure the motors and propellers are clear from obstructions! The direction of the motor rotation is dependent on how the three phases of the motor are physically connected to the ESCs (if any two wires are swapped, the direction of rotation will flip). Because we cannot guarantee what order the phases are connected, the motor directions must be configured in software. When a slider is moved DOWN, the thruster should push air/water TOWARD the cable entering the housing. Click the checkbox to reverse the direction of the corresponding thruster.")
+                text:           qsTr("Moving the sliders will cause the motors to spin. Make sure the motors and propellers are clear from obstructions! The direction of the motor rotation is dependent on how the three phases of the motor are physically connected to the ESCs (if any two wires are swapped, the direction of rotation will flip). Because we cannot guarantee what order the phases are connected, the motor directions must be configured in software. When a slider is moved DOWN, the thruster should push air/water TOWARD the cable entering the housing. Click the checkbox to reverse the direction of the corresponding thruster.\n\n"
+                                     + "Blue Robotics thrusters are lubricated by water and are not designed to be run in air. Testing the thrusters in air is ok at low speeds for short periods of time. Extended operation of Blue Robotics in air may lead to overheating and permanent damage. Without water lubrication, Blue Robotics thrusters may also make some unpleasant noises when operated in air; this is normal.")
             }
 
             Row {
