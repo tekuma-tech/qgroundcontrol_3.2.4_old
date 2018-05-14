@@ -77,7 +77,13 @@ SetupPage {
 
                                     onTriggered: {
                                         if (controller.vehicle.armed) {
-                                            controller.vehicle.motorTest(index, slider.value)
+                                            var reversed = controller.getParameterFact(-1, "MOT_" + (index + 1) + "_DIRECTION").value == -1
+
+                                            if (reversed) {
+                                                controller.vehicle.motorTest(index, 100 - slider.value)
+                                            } else {
+                                                controller.vehicle.motorTest(index, slider.value)
+                                            }
                                         }
                                     }
                                 }
@@ -137,6 +143,7 @@ SetupPage {
                         height:             1
                         color:              qgcPal.text
                     }
+
                     Row {
                         anchors.margins: ScreenTools.defaultFontPixelWidth
 
