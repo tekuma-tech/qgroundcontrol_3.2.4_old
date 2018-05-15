@@ -27,6 +27,7 @@ SetupPage {
     readonly property int _sliderHeight:    10
 
     property var neutralValue: 50;
+    property var _lastIndex: 0;
 
     FactPanelController {
         id:             controller
@@ -64,35 +65,12 @@ SetupPage {
 
                             Column {
                                 property alias motorSlider: slider
-                                property alias testTimer: timer
                                 spacing:    ScreenTools.defaultFontPixelWidth
-
-                                Timer {
-                                    id: timer
-                                    interval:       250
-                                    running:        false
-                                    repeat:         true
-
-                                    property real _lastValue: neutralValue // TODO should be called neutralValue, or actually implement last value?
-
-                                    onTriggered: {
-                                        if (controller.vehicle.armed) {
-                                            var reversed = controller.getParameterFact(-1, "MOT_" + (index + 1) + "_DIRECTION").value == -1
-
-                                            if (reversed) {
-                                                controller.vehicle.motorTest(index, 100 - slider.value)
-                                            } else {
-                                                controller.vehicle.motorTest(index, slider.value)
-                                            }
-                                        }
-                                    }
-                                }
 
                                 QGCLabel {
                                     anchors.horizontalCenter:   parent.horizontalCenter
                                     text:                       index + 1
                                 }
-
 
                                 QGCSlider {
                                     id:                         slider
@@ -106,6 +84,7 @@ SetupPage {
                                         if (!slider.pressed) {
                                             slider.value = neutralValue
                                         }
+                                        _lastIndex = index
                                     }
 
                                     MouseArea {
@@ -167,51 +146,52 @@ SetupPage {
                     } // Row
                 }
 
-                Column {
-                    spacing:    ScreenTools.defaultFontPixelWidth
+                // allSlider does not work with the current _lastIndex logic...
+//                Column {
+//                    spacing:    ScreenTools.defaultFontPixelWidth
 
-                    QGCLabel {
-                        anchors.horizontalCenter:   parent.horizontalCenter
-                        text:                       qsTr("All")
-                    }
+//                    QGCLabel {
+//                        anchors.horizontalCenter:   parent.horizontalCenter
+//                        text:                       qsTr("All")
+//                    }
 
-                    QGCSlider {
-                        id:                         allSlider
-                        height:                     ScreenTools.defaultFontPixelHeight * _sliderHeight
-                        orientation:                Qt.Vertical
-                        maximumValue:               100
-                        value:                      neutralValue
+//                    QGCSlider {
+//                        id:                         allSlider
+//                        height:                     ScreenTools.defaultFontPixelHeight * _sliderHeight
+//                        orientation:                Qt.Vertical
+//                        maximumValue:               100
+//                        value:                      neutralValue
 
-                        onValueChanged: {
-                            for (var sliderIndex=0; sliderIndex<sliderRepeater.count; sliderIndex++) {
-                                sliderRepeater.itemAt(sliderIndex).motorSlider.value = allSlider.value
-                            }
-                        }
+//                        onValueChanged: {
+//                            for (var sliderIndex=0; sliderIndex<sliderRepeater.count; sliderIndex++) {
+//                                sliderRepeater.itemAt(sliderIndex).motorSlider.value = allSlider.value
+//                            }
+//                        }
 
-                        // Give slider 'center sprung' behavior
-                        onPressedChanged: {
-                            if (!allSlider.pressed) {
-                                allSlider.value = neutralValue
-                            }
-                        }
+//                        // Give slider 'center sprung' behavior
+//                        onPressedChanged: {
+//                            if (!allSlider.pressed) {
+//                                allSlider.value = neutralValue
+//                            }
+//                        }
 
-                        MouseArea {
-                            anchors.fill: parent
-                            onWheel: {
-                                // do nothing
-                                wheel.accepted = true;
-                            }
-                            onPressed: {
-                                // propogate/accept
-                                mouse.accepted = false;
-                            }
-                            onReleased: {
-                                // propogate/accept
-                                mouse.accepted = false;
-                            }
-                        }
-                    }
-                } // Column
+//                        MouseArea {
+//                            anchors.fill: parent
+//                            onWheel: {
+//                                // do nothing
+//                                wheel.accepted = true;
+//                            }
+//                            onPressed: {
+//                                // propogate/accept
+//                                mouse.accepted = false;
+//                            }
+//                            onReleased: {
+//                                // propogate/accept
+//                                mouse.accepted = false;
+//                            }
+//                        }
+//                    }
+//                } // Column
 
 //                MultiRotorMotorDisplay {
 //                    anchors.top:    parent.top
@@ -244,9 +224,7 @@ SetupPage {
                     id: safetySwitch
                     onClicked: {
                         if (controller.vehicle.armed) {
-                            for (var sliderIndex=0; sliderIndex<sliderRepeater.count; sliderIndex++) {
-                                sliderRepeater.itemAt(sliderIndex).testTimer.stop()
-                            }
+                            timer.stop()
                         }
 
                         controller.vehicle.armed = checked
@@ -260,13 +238,9 @@ SetupPage {
                     {
                         safetySwitch.checked = armed
                             if (!armed) {
-                                for (var sliderIndex=0; sliderIndex<sliderRepeater.count; sliderIndex++) {
-                                    sliderRepeater.itemAt(sliderIndex).testTimer.stop()
-                                }
+                                timer.stop()
                             } else {
-                                for (var sliderIndex=0; sliderIndex<sliderRepeater.count; sliderIndex++) {
-                                    sliderRepeater.itemAt(sliderIndex).testTimer.start()
-                                }
+                                timer.start()
                             }
                             for (var sliderIndex=0; sliderIndex<sliderRepeater.count; sliderIndex++) {
                                 sliderRepeater.itemAt(sliderIndex).motorSlider.value = neutralValue
@@ -280,6 +254,28 @@ SetupPage {
                     text:   qsTr("Slide this switch to arm the vehicle and enable the motor test (CAUTION!)")
                 }
             } // Row
+
+            Timer {
+                id: timer
+                interval:       50
+                running:        false
+                repeat:         true
+
+                onTriggered: {
+                    if (controller.vehicle.armed) {
+                           console.log(_lastIndex)
+                            var slider = sliderRepeater.itemAt(_lastIndex)
+
+                            var reversed = controller.getParameterFact(-1, "MOT_" + (_lastIndex + 1) + "_DIRECTION").value == -1
+
+                            if (reversed) {
+                                controller.vehicle.motorTest(_lastIndex, 100 - slider.motorSlider.value)
+                            } else {
+                                controller.vehicle.motorTest(_lastIndex, slider.motorSlider.value)
+                            }
+                    }
+                }
+            }
         } // Column
     } // Component
 } // SetupPahe
