@@ -16,11 +16,11 @@ matrix:
     fast_finish: true
     include:
         - os: linux
-          dist: xenial
+          dist: trusty
           env: SPEC=linux-g++-64 CONFIG=installer
           sudo: required
         - os: linux
-          dist: xenial
+          dist: trusty
           env: SPEC=linux-g++-64 CONFIG=debug
           services: xvfb
           sudo: required
@@ -198,7 +198,7 @@ before_deploy:
 deploy:
   - provider: releases
     api_key:
-      secure: "1HeVpLxWXbDIm5C/us/21dfpLVXqCliPqHontKSDJd91yk96e8Zh6eh5GmrqyqnQ"
+      secure: '1HeVpLxWXbDIm5C/us/21dfpLVXqCliPqHontKSDJd91yk96e8Zh6eh5GmrqyqnQ'
     file_glob: true
     file:
       - ${SHADOW_BUILD_DIR}/release/package/qgroundcontrol.*
