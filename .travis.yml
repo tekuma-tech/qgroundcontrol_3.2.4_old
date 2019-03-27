@@ -193,8 +193,7 @@ before_deploy:
 
 deploy:
   - provider: releases
-    api_key:
-      secure: "botKey"
+    api_key: ${botKey} 
     file_glob: true
     file:
       - ${SHADOW_BUILD_DIR}/release/package/qgroundcontrol.*
