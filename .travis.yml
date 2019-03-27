@@ -194,7 +194,7 @@ before_deploy:
 deploy:
  - provider: releases
     api_key:
-      secure: "g3GmQKYf6yG/Lv9yCbxGQL6F1Thjxjpsn5IEbRmoY35pIq9cJ/q6WMBsKWavewbfS5qYLHH954rxR+aIwzu0HzFR0946YxHoDqLa7ptkYFaw94SOf/u9fAw0e3pn7BCJR/RtuCWAJussT1HFebrPIr8t1IyB8RE3wxFYYUkN1DgqdGojvungCxki82fPMGGyF3pHhaqdX6L0nHN49au/YSj2kGEFhCLXArkzsmIIBgr+OyVXiasoUHi8E/3x2K3aQAmIQMisI4iq+FUMUnMIqNPlfGnao7hpXXKYRnNDo31Ti1lWZnx2e2OJgHGV4UhaXiw9Lf5q48q6+OObvWMlVLMkic1enqxSlYxhAUkqTRysBcCeU94Faj3Tl3X7t+xhJrAhD9/zw9umJ6NMDGeBXPxClcs2Q7fjCuU1O4h56AIIpAQczuEB9Vza3CYCGsNrFpTN5TuXosdqlPHwPc2f6S/0BZll/o1FY19X0xpEPVZE1kNTEW30HGYzdb78OClTbewYNCEIMQE7mZNRMllPbvP/Hl9Wqgi073eMJEj6mRja2rTw8uyXhso84dFHJkjlBpdueqhEr8B7Fp/+nj2AXtDkgnjWpDqfcgkEFZah6XTToGSYSgffnLb+ND/nzoJtkm83FsBe++cPjbXQZ9ER5i1XT9z4POasszxjToifeeI="
+      secure: "gIRuDtj32KCe8fAqqEHL7g"
     file_glob: true
     file:
       - ${SHADOW_BUILD_DIR}/release/package/qgroundcontrol.*
