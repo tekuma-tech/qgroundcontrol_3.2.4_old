@@ -23,15 +23,15 @@ matrix:
           dist: trusty
           env: SPEC=linux-g++-64 CONFIG=debug
           sudo: required
-# OSX builds pared back to installer only since travis sucks so bad we can't afford more than one'
-#        - os: osx
-#          osx_image: xcode8
-#          env: SPEC=macx-clang CONFIG=debug
-#          sudo: required
-#        - os: osx
-#          osx_image: xcode8
-#          env: SPEC=macx-ios-clang CONFIG=release
-#          sudo: false
+
+        - os: osx
+          osx_image: xcode8
+          env: SPEC=macx-clang CONFIG=debug
+          sudo: required
+        - os: osx
+          osx_image: xcode8
+          env: SPEC=macx-ios-clang CONFIG=release
+          sudo: false
 
 android:
   components:
@@ -190,7 +190,7 @@ before_deploy:
   - if [[ "${SPEC}" = "linux-g++-64" && "${CONFIG}" = "installer" ]]; then
         ./deploy/create_linux_appimage.sh ${TRAVIS_BUILD_DIR} ${SHADOW_BUILD_DIR}/release ${SHADOW_BUILD_DIR}/release/package;
     fi
-echo deploying with "1HeVpLxWXbDIm5C/us/21dfpLVXqCliPqHontKSDJd91yk96e8Zh6eh5GmrqyqnQ"
+
 deploy:
   - provider: releases
     api_key:
