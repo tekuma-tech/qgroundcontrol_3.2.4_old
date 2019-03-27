@@ -192,7 +192,7 @@ before_deploy:
     fi
 
 deploy:
- - provider: releases
+  - provider: releases
     api_key:
       secure: gIRuDtj32KCe8fAqqEHL7g
     file_glob: true
