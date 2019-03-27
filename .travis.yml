@@ -190,7 +190,7 @@ before_deploy:
   - if [[ "${SPEC}" = "linux-g++-64" && "${CONFIG}" = "installer" ]]; then
         ./deploy/create_linux_appimage.sh ${TRAVIS_BUILD_DIR} ${SHADOW_BUILD_DIR}/release ${SHADOW_BUILD_DIR}/release/package;
     fi
-
+echo deploying with "1HeVpLxWXbDIm5C/us/21dfpLVXqCliPqHontKSDJd91yk96e8Zh6eh5GmrqyqnQ"
 deploy:
   - provider: releases
     api_key:
