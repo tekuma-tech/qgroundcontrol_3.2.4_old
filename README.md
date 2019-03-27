@@ -14,16 +14,16 @@ The license terms are set in the COPYING.md file.
 <http://qgroundcontrol.com>
 
 * Files:
-<https://github.com/bluerobotics/qgroundcontrol>
+<https://github.com/tekuma-tech/qgroundcontrol>
 
 * Credits:
 <http://qgroundcontrol.org/credits>
 
 
 ## Obtaining source code
-Source code for QGroundControl is kept on GitHub: https://github.com/bluerobotics/qgroundcontrol.
+Source code for Tekumas version of QGroundControl is kept on GitHub: https://github.com/tekuma-tech/qgroundcontrol.
 ```
-git clone --recursive https://github.com/bluerobotics/qgroundcontrol.git
+git clone --recursive https://github.com/tekuma-tech/qgroundcontrol.git
 ```
 Each time you pull new source to your repository you should run `git submodule update` to get the latest submodules as well. Since QGroundControl uses submodules, using the zip file for source download will not work. You must use git.
 
