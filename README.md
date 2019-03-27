@@ -4,7 +4,7 @@
 
 [![Releases](https://img.shields.io/github/release/mavlink/QGroundControl.svg)](https://github.com/tekuma-tech/QGroundControl/releases)
 [![Travis Build Status](https://travis-ci.com/tekuma-tech/qgroundcontrol.svg?branch=3.2.4)](https://travis-ci.org/tekuma-tech/qgroundcontrol)
-```[![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/crxcm4qayejuvh6c/branch/master?svg=true)](https://ci.appveyor.com/project/mavlink/qgroundcontrol)
+```[![Appveyor Build Status](https://api.travis-ci.org/freezerohmatic/qgroundcontrol.svg?branch=master)](https://ci.appveyor.com/project/freezerohmatic/qgroundcontrol)
 ```
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mavlink/qgroundcontrol?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
