@@ -58,47 +58,6 @@ artifacts:
     name: symbols
 
 deploy:
-# deploy continuous builds to s3
-  - provider: S3
-    access_key_id: AKIAI42TETMLX6KJRTRA
-    secret_access_key:
-      secure: H+6JLuM6RmVdlzvYZ92+E1+NB/Z4580IDd8m2wNCbSpFhzSewGtVk3M2AkjKTlCG
-    bucket: downloads.bluerobotics.com
-    region: us-east-1
-    set_public: true
-    folder: QGC/builds/$(APPVEYOR_REPO_BRANCH)
-    artifact: qgcinstaller
-    on:
-      CONFIG: installer
-      appveyor_repo_tag: false
-
-# deploy daily build symbols to s3
-  - provider: S3
-    access_key_id: AKIAI42TETMLX6KJRTRA
-    secret_access_key:
-      secure: H+6JLuM6RmVdlzvYZ92+E1+NB/Z4580IDd8m2wNCbSpFhzSewGtVk3M2AkjKTlCG
-    bucket: downloads.bluerobotics.com
-    region: us-east-1
-    set_public: true
-    folder: QGC/cisyms
-    artifact: symbols
-    on:
-      CONFIG: installer
-      appveyor_repo_tag: false
-
-# deploy release symbols to s3
-  - provider: S3
-    access_key_id: AKIAI42TETMLX6KJRTRA
-    secret_access_key:
-      secure: H+6JLuM6RmVdlzvYZ92+E1+NB/Z4580IDd8m2wNCbSpFhzSewGtVk3M2AkjKTlCG
-    bucket: downloads.bluerobotics.com
-    region: us-east-1
-    set_public: true
-    folder: QGC/releasesyms
-    artifact: symbols
-    on:
-      CONFIG: installer
-      appveyor_repo_tag: true
 
 # deploy tagged releases to Github releases
   - provider: GitHub
@@ -107,34 +66,6 @@ deploy:
     artifact: qgcinstaller
     draft: false
     prerelease: false
-    on:
-      CONFIG: installer
-      appveyor_repo_tag: true
-
-# deploy tagged releases to s3 version folder
-  - provider: S3
-    access_key_id: AKIAI42TETMLX6KJRTRA
-    secret_access_key:
-      secure: H+6JLuM6RmVdlzvYZ92+E1+NB/Z4580IDd8m2wNCbSpFhzSewGtVk3M2AkjKTlCG
-    bucket: downloads.bluerobotics.com
-    region: us-east-1
-    set_public: true
-    folder: QGC/$(APPVEYOR_REPO_TAG_NAME)
-    artifact: qgcinstaller
-    on:
-      CONFIG: installer
-      appveyor_repo_tag: true
-
-# deploy tagged releases to s3 latest folder
-  - provider: S3
-    access_key_id: AKIAI42TETMLX6KJRTRA
-    secret_access_key:
-      secure: H+6JLuM6RmVdlzvYZ92+E1+NB/Z4580IDd8m2wNCbSpFhzSewGtVk3M2AkjKTlCG
-    bucket: downloads.bluerobotics.com
-    region: us-east-1
-    set_public: true
-    folder: QGC/latest
-    artifact: qgcinstaller
     on:
       CONFIG: installer
       appveyor_repo_tag: true
