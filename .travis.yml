@@ -194,7 +194,7 @@ before_deploy:
 deploy:
   - provider: releases
     api_key:
-      secure: "b31b501dda99eb31c84b822d466f5123c5a4a051"
+      secure: "1HeVpLxWXbDIm5C/us/21dfpLVXqCliPqHontKSDJd91yk96e8Zh6eh5GmrqyqnQ"
     file_glob: true
     file:
       - ${SHADOW_BUILD_DIR}/release/package/qgroundcontrol.*
