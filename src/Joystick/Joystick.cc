@@ -36,7 +36,9 @@ const char* Joystick::_rgFunctionSettingsKey[Joystick::maxFunction] = {
     "RollAxis",
     "PitchAxis",
     "YawAxis",
-    "ThrottleAxis"
+    "ThrottleAxis",
+    "ForwardAxis",
+    "LatAxis"
 };
 
 int Joystick::_transmitterMode = 2;
@@ -62,20 +64,21 @@ Joystick::Joystick(const QString& name, int axisCount, int buttonCount, int hatC
     , _pollingStartedForCalibration(false)
     , _multiVehicleManager(multiVehicleManager)
 {
-
+   qDebug()  << "Starting Joystick";
     _rgAxisValues = new int[_axisCount];
     _rgCalibration = new Calibration_t[_axisCount];
     _rgButtonValues = new bool[_totalButtonCount];
-
+   qDebug() << "Loading Axis";
     for (int i=0; i<_axisCount; i++) {
         _rgAxisValues[i] = 0;
     }
     for (int i=0; i<_totalButtonCount; i++) {
         _rgButtonValues[i] = false;
     }
+   qDebug()  << "Updating TX mode";
 
     _updateTXModeSettingsKey(_multiVehicleManager->activeVehicle());
-
+    qDebug() << "Load Settings";
     _loadSettings();
 
     connect(_multiVehicleManager, &MultiVehicleManager::activeVehicleChanged, this, &Joystick::_activeVehicleChanged);
@@ -89,6 +92,7 @@ Joystick::~Joystick()
 }
 
 void Joystick::_setDefaultCalibration(void) {
+     qDebug() << "Settings default Joystick";
     QSettings   settings;
     settings.beginGroup(_settingsGroup);
     settings.beginGroup(_name);
@@ -110,6 +114,8 @@ void Joystick::_setDefaultCalibration(void) {
     _rgFunctionAxis[pitchFunction]      = 3;
     _rgFunctionAxis[yawFunction]        = 0;
     _rgFunctionAxis[throttleFunction]   = 1;
+    _rgFunctionAxis[forwardFunction]    = 5;
+    _rgFunctionAxis[latFunction]        = 4;
 
     _exponential = 0;
     _accumulator = false;
@@ -117,6 +123,7 @@ void Joystick::_setDefaultCalibration(void) {
     _throttleMode = ThrottleModeCenterZero;
     _calibrated = true;
 
+    qDebug() << "Saving default Joystick";
     _saveSettings();
 }
 
@@ -212,13 +219,19 @@ void Joystick::_loadSettings(void)
     }
 
     for (int function=0; function<maxFunction; function++) {
+
         int functionAxis;
 
         functionAxis = settings.value(_rgFunctionSettingsKey[function], -1).toInt(&convertOk);
-        badSettings |= !convertOk || (functionAxis == -1);
+        qDebug() << "Joystick1::" << functionAxis;
 
+        if(functionAxis >= Joystick::maxFunction){
+            functionAxis = -1;
+        }
+        badSettings |= !convertOk || (functionAxis == -1);
         _rgFunctionAxis[function] = functionAxis;
 
+        qDebug() << "_loadSettings function:axis:badsettings" << function << functionAxis << badSettings << convertOk;
         qCDebug(JoystickLog) << "_loadSettings function:axis:badsettings" << function << functionAxis << badSettings;
     }
 
@@ -232,6 +245,7 @@ void Joystick::_loadSettings(void)
     }
 
     if (badSettings) {
+        qDebug() << "Joystick loading failed";
         _calibrated = false;
         settings.setValue(_calibratedSettingsKey, false);
     }
@@ -287,10 +301,12 @@ void Joystick::_saveSettings(void)
     // Write mode 2 mappings without changing mapping currently in use
     int temp[maxFunction];
     _remapAxes(_transmitterMode, 2, temp);
+    qDebug() << "Joystick2";
 
     for (int function=0; function<maxFunction; function++) {
         settings.setValue(_rgFunctionSettingsKey[function], temp[function]);
         qCDebug(JoystickLog) << "_saveSettings name:function:axis" << _name << function << _rgFunctionSettingsKey[function];
+        qDebug() << "_saveSettings name:function:axis" << _name << function << _rgFunctionSettingsKey[function];
     }
 
     for (int button=0; button<_totalButtonCount; button++) {
@@ -302,17 +318,19 @@ void Joystick::_saveSettings(void)
 // Relative mappings of axis functions between different TX modes
 int Joystick::_mapFunctionMode(int mode, int function) {
 
-    static const int mapping[][4] = {
-        { 2, 1, 0, 3 },
-        { 2, 3, 0, 1 },
-        { 0, 1, 2, 3 },
-        { 0, 3, 2, 1 }};
+    static const int mapping[][6] = {
+        { 2, 1, 0, 3 , 4, 5},
+        { 2, 3, 0, 1 , 4, 5},
+        { 0, 1, 2, 3 , 4, 5},
+        { 0, 3, 2, 1 , 4, 5}};
 
     return mapping[mode-1][function];
 }
 
 // Remap current axis functions from current TX mode to new TX mode
 void Joystick::_remapAxes(int currentMode, int newMode, int (&newMapping)[maxFunction]) {
+    qDebug() << "Joystick3";
+
     int temp[maxFunction];
 
     for(int function = 0; function < maxFunction; function++) {
@@ -397,7 +415,6 @@ void Joystick::run(void)
 
     while (!_exitThread) {
     _update();
-
         // Update axes
         for (int axisIndex=0; axisIndex<_axisCount; axisIndex++) {
             int newAxisValue = _getAxis(axisIndex);
@@ -443,6 +460,12 @@ void Joystick::run(void)
                     axis = _rgFunctionAxis[throttleFunction];
             float   throttle = _adjustRange(_rgAxisValues[axis], _rgCalibration[axis], _throttleMode==ThrottleModeDownZero?false:_deadband);
 
+                    axis = _rgFunctionAxis[latFunction];
+            float   lat = _adjustRange(_rgAxisValues[axis], _rgCalibration[axis],_deadband);
+
+                    axis = _rgFunctionAxis[forwardFunction];
+            float   forward = _adjustRange(_rgAxisValues[axis], _rgCalibration[axis],_deadband);
+
             if ( _accumulator ) {
                 static float throttle_accu = 0.f;
 
@@ -456,13 +479,18 @@ void Joystick::run(void)
             float pitch_limited = std::max(static_cast<float>(-M_PI_4), std::min(pitch, static_cast<float>(M_PI_4)));
             float yaw_limited = std::max(static_cast<float>(-M_PI_4), std::min(yaw, static_cast<float>(M_PI_4)));
             float throttle_limited = std::max(static_cast<float>(-M_PI_4), std::min(throttle, static_cast<float>(M_PI_4)));
+            float lat_limited = std::max(static_cast<float>(-M_PI_4), std::min(lat, static_cast<float>(M_PI_4)));
+            float forward_limited = std::max(static_cast<float>(-M_PI_4), std::min(forward, static_cast<float>(M_PI_4)));
+
 
             // Map from unit circle to linear range and limit
             roll =      std::max(-1.0f, std::min(tanf(asinf(roll_limited)), 1.0f));
             pitch =     std::max(-1.0f, std::min(tanf(asinf(pitch_limited)), 1.0f));
             yaw =       std::max(-1.0f, std::min(tanf(asinf(yaw_limited)), 1.0f));
             throttle =  std::max(-1.0f, std::min(tanf(asinf(throttle_limited)), 1.0f));
-            
+            lat =       std::max(-1.0f, std::min(tanf(asinf(lat_limited)), 1.0f));
+            forward =   std::max(-1.0f, std::min(tanf(asinf(forward_limited)), 1.0f));
+
             if ( _exponential != 0 ) {
                 // Exponential (0% to -50% range like most RC radios)
                 //_exponential is set by a slider in joystickConfig.qml
@@ -518,11 +546,10 @@ void Joystick::run(void)
 
             _lastButtonBits = newButtonBits;
 
-            qCDebug(JoystickValuesLog) << "name:roll:pitch:yaw:throttle" << name() << roll << -pitch << yaw << throttle;
-
-            emit manualControl(roll, -pitch, yaw, throttle, buttonPressedBits, _activeVehicle->joystickMode());
+            qCDebug(JoystickValuesLog) << "name:roll:pitch:yaw:throttle:lat:forward" << name() << roll << -pitch << yaw << throttle << lat << forward;
+            //this is also used to send values to the ROV
+            emit manualControl(roll, -pitch, yaw, throttle, buttonPressedBits, _activeVehicle->joystickMode(), lat, forward);
         }
-
         // Sleep, update rate of joystick is approx. 25 Hz (1000 ms / 25 = 40 ms)
         QGC::SLEEP::msleep(40);
     }
@@ -538,6 +565,7 @@ void Joystick::startPolling(Vehicle* vehicle)
         if (_activeVehicle) {
             UAS* uas = _activeVehicle->uas();
             disconnect(this, &Joystick::manualControl, uas, &UAS::setExternalControlSetpoint);
+            disconnect(this, &Joystick::manualControl, uas, &UAS::setExternalControlSetpoint6DOF);
         }
 
         // Always set up the new vehicle
@@ -556,7 +584,13 @@ void Joystick::startPolling(Vehicle* vehicle)
             _pollingStartedForCalibration = false;
 
             UAS* uas = _activeVehicle->uas();
-            connect(this, &Joystick::manualControl, uas, &UAS::setExternalControlSetpoint);
+            if(this->name().contains("Tekuma")){
+                qDebug() << "Tekuma Controller Active";
+                connect(this, &Joystick::manualControl, uas, &UAS::setExternalControlSetpoint6DOF);
+            }
+            else{
+                connect(this, &Joystick::manualControl, uas, &UAS::setExternalControlSetpoint);
+            }
             // FIXME: ****
             //connect(this, &Joystick::buttonActionTriggered, uas, &UAS::triggerAction);
         }
@@ -578,6 +612,7 @@ void Joystick::stopPolling(void)
             // Neutral attitude controls
             // emit manualControl(0, 0, 0, 0.5, 0, _activeVehicle->joystickMode());
             disconnect(this, &Joystick::manualControl,          uas, &UAS::setExternalControlSetpoint);
+            disconnect(this, &Joystick::manualControl, uas, &UAS::setExternalControlSetpoint6DOF);
         }
         // FIXME: ****
         //disconnect(this, &Joystick::buttonActionTriggered,  uas, &UAS::triggerAction);
@@ -624,6 +659,8 @@ void Joystick::setFunctionAxis(AxisFunction_t function, int axis)
 
 int Joystick::getFunctionAxis(AxisFunction_t function)
 {
+    qDebug() << "Joystick4";
+
     if (function < 0 || function >= maxFunction) {
         qCWarning(JoystickLog) << "Invalid function" << function;
     }

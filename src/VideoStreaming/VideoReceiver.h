@@ -22,6 +22,7 @@
 #include <QTimer>
 #include <QTcpSocket>
 
+
 #include "VideoSurface.h"
 
 #if defined(QGC_GST_STREAMING)
@@ -29,6 +30,8 @@
 #endif
 
 Q_DECLARE_LOGGING_CATEGORY(VideoReceiverLog)
+
+
 
 class VideoReceiver : public QObject
 {

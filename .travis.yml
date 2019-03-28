@@ -203,4 +203,3 @@ deploy:
     on:
       tags: true
       condition: $CONFIG = installer
-

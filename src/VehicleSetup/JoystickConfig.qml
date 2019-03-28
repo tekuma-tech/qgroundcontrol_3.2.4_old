@@ -187,7 +187,7 @@ SetupPage {
                         QGCLabel {
                             id:     rollLabel
                             width:  defaultTextWidth * 10
-                            text:   _activeVehicle.sub ? qsTr("Lateral") : qsTr("Roll")
+                            text:   qsTr("Roll")
                         }
 
                         Loader {
@@ -209,7 +209,64 @@ SetupPage {
                             onManualControl: rollLoader.item.axisValue = roll*32768.0
                         }
                     }
+                    Item {
+                        width:  parent.width
+                        height: defaultTextHeight * 2
 
+                        QGCLabel {
+                            id:     lateralLabel
+                            width:  defaultTextWidth * 10
+                            text:   qsTr("Lateral")
+                        }
+
+                        Loader {
+                            id:                 lateraLoader
+                            anchors.left:       lateralLabel.right
+                            anchors.right:      parent.right
+                            height:             ScreenTools.defaultFontPixelHeight
+                            width:              100
+                            sourceComponent:    axisMonitorDisplayComponent
+
+                            property real defaultTextWidth: ScreenTools.defaultFontPixelWidth
+                            property bool mapped:           controller.latAxisMapped
+                            property bool reversed:         controller.latAxisReversed
+                        }
+
+                        Connections {
+                            target: _activeJoystick
+
+                            onManualControl: lateraLoader.item.axisValue = lat*32768.0
+                        }
+                    }
+                    Item {
+                        width:  parent.width
+                        height: defaultTextHeight * 2
+
+                        QGCLabel {
+                            id:     forwardLabel
+                            width:  defaultTextWidth * 10
+                            text:   qsTr("Forward")
+                        }
+
+                        Loader {
+                            id:                 forwardLoader
+                            anchors.left:       forwardLabel.right
+                            anchors.right:      parent.right
+                            height:             ScreenTools.defaultFontPixelHeight
+                            width:              100
+                            sourceComponent:    axisMonitorDisplayComponent
+
+                            property real defaultTextWidth: ScreenTools.defaultFontPixelWidth
+                            property bool mapped:           controller.forwardAxisMapped
+                            property bool reversed:         controller.forwardAxisReversed
+                        }
+
+                        Connections {
+                            target: _activeJoystick
+
+                            onManualControl: forwardLoader.item.axisValue = forward*32768.0
+                        }
+                    }
                     Item {
                         width:  parent.width
                         height: defaultTextHeight * 2
@@ -217,7 +274,7 @@ SetupPage {
                         QGCLabel {
                             id:     pitchLabel
                             width:  defaultTextWidth * 10
-                            text:   _activeVehicle.sub ? qsTr("Forward") : qsTr("Pitch")
+                            text:   qsTr("Pitch")
                         }
 
                         Loader {

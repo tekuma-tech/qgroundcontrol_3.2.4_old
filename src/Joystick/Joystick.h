@@ -49,6 +49,8 @@ public:
         pitchFunction,
         yawFunction,
         throttleFunction,
+        forwardFunction,
+        latFunction,
         maxFunction
     } AxisFunction_t;
 
@@ -57,6 +59,7 @@ public:
         ThrottleModeDownZero,
         ThrottleModeMax
     } ThrottleMode_t;
+//qDebug() << "Joystick";
 
     Q_PROPERTY(QString name READ name CONSTANT)
 
@@ -152,8 +155,10 @@ signals:
     ///     @param pitch    Range i -1:1, negative meaning pitch down, positive meaning pitch up
     ///     @param yaw      Range is -1:1, negative meaning yaw left, positive meaning yaw right
     ///     @param throttle Range is 0:1, 0 meaning no throttle, 1 meaning full throttle
+    ///     @param lat
+    ///     @param forward
     ///     @param mode     See Vehicle::JoystickMode_t enum
-    void manualControl(float roll, float pitch, float yaw, float throttle, quint16 buttons, int joystickMmode);
+    void manualControl(float roll, float pitch, float yaw, float throttle, quint16 buttons, int joystickMmode,  float lat, float forward);
 
     void buttonActionTriggered(int action);
 

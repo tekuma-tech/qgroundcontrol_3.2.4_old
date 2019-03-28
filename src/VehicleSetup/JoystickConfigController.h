@@ -51,11 +51,15 @@ public:
     Q_PROPERTY(bool pitchAxisMapped     READ pitchAxisMapped    NOTIFY pitchAxisMappedChanged)
     Q_PROPERTY(bool yawAxisMapped       READ yawAxisMapped      NOTIFY yawAxisMappedChanged)
     Q_PROPERTY(bool throttleAxisMapped  READ throttleAxisMapped NOTIFY throttleAxisMappedChanged)
+    Q_PROPERTY(bool latAxisMapped       READ latAxisMapped      NOTIFY latAxisMappedChanged)
+    Q_PROPERTY(bool forwardAxisMapped   READ forwardAxisMapped  NOTIFY forwardAxisMappedChanged)
 
     Q_PROPERTY(int rollAxisReversed     READ rollAxisReversed       NOTIFY rollAxisReversedChanged)
     Q_PROPERTY(int pitchAxisReversed    READ pitchAxisReversed      NOTIFY pitchAxisReversedChanged)
     Q_PROPERTY(int yawAxisReversed      READ yawAxisReversed        NOTIFY yawAxisReversedChanged)
     Q_PROPERTY(int throttleAxisReversed READ throttleAxisReversed   NOTIFY throttleAxisReversedChanged)
+    Q_PROPERTY(int latAxisReversed      READ latAxisReversed        NOTIFY latAxisReversedChanged)
+    Q_PROPERTY(int forwardAxisReversed  READ forwardAxisReversed    NOTIFY forwardAxisReversedChanged)
     
     Q_PROPERTY(bool deadbandToggle            READ getDeadbandToggle        WRITE setDeadbandToggle    NOTIFY deadbandToggled)
 
@@ -72,11 +76,15 @@ public:
     bool pitchAxisMapped(void);
     bool yawAxisMapped(void);
     bool throttleAxisMapped(void);
+    bool latAxisMapped(void);
+    bool forwardAxisMapped(void);
     
     bool rollAxisReversed(void);
     bool pitchAxisReversed(void);
     bool yawAxisReversed(void);
     bool throttleAxisReversed(void);
+    bool latAxisReversed(void);
+    bool forwardAxisReversed(void);
     
     bool getDeadbandToggle(void);
     void setDeadbandToggle(bool);
@@ -96,11 +104,15 @@ signals:
     void pitchAxisMappedChanged(bool mapped);
     void yawAxisMappedChanged(bool mapped);
     void throttleAxisMappedChanged(bool mapped);
+    void latAxisMappedChanged(bool mapped);
+    void forwardAxisMappedChanged(bool mapped);
 
     void rollAxisReversedChanged(bool reversed);
     void pitchAxisReversedChanged(bool reversed);
     void yawAxisReversedChanged(bool reversed);
     void throttleAxisReversedChanged(bool reversed);
+    void latAxisReversedChanged(bool reversed);
+    void forwardAxisReversedChanged(bool reversed);
 
     void deadbandToggled(bool value);
     
@@ -211,7 +223,7 @@ private:
     
     int _rgFunctionAxisMapping[Joystick::maxFunction]; ///< Maps from joystick function to axis index. _axisMax indicates axis not set for this function.
 
-    static const int _attitudeControls = 5;
+    static const int _attitudeControls = 6;
     
     int                 _axisCount;         ///< Number of actual joystick axes available
     static const int    _axisNoAxis = -1;   ///< Signals no axis set

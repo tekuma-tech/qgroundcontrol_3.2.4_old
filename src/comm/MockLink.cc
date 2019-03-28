@@ -408,6 +408,9 @@ void MockLink::_handleIncomingMavlinkBytes(const uint8_t* bytes, int cBytes)
             _handleLogRequestData(msg);
             break;
 
+        case MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE:
+            _handleRCChannelOverride(msg);
+            break;
         default:
             break;
         }
@@ -436,7 +439,19 @@ void MockLink::_handleManualControl(const mavlink_message_t& msg)
     mavlink_manual_control_t manualControl;
     mavlink_msg_manual_control_decode(&msg, &manualControl);
 
-    qDebug() << "MANUAL_CONTROL" << manualControl.x << manualControl.y << manualControl.z << manualControl.r;
+    if(manualControl.buttons == 1){
+        qDebug() << "MANUAL_CONTROL" << 0 << 0 << manualControl.z << manualControl.r << manualControl.x << manualControl.y;
+    }
+    else{
+        qDebug() << "MANUAL_CONTROL" << manualControl.x << manualControl.y << manualControl.z << manualControl.r << 0 << 0;
+    }
+}
+
+void MockLink::_handleRCChannelOverride(const mavlink_message_t& msg)
+{
+    mavlink_rc_channels_override_t manualControl;
+    mavlink_msg_rc_channels_override_decode(&msg, &manualControl);
+        qDebug() << "RCChannelOverrise_Control" << manualControl.chan1_raw << manualControl.chan2_raw << manualControl.chan3_raw << manualControl.chan4_raw << manualControl.chan5_raw << manualControl.chan6_raw;
 }
 
 void MockLink::_setParamFloatUnionIntoMap(int componentId, const QString& paramName, float paramFloat)

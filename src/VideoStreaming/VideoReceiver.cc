@@ -394,8 +394,8 @@ VideoReceiver::start()
 #endif
 }
 
-void
-VideoReceiver::_startAudio()
+//#ifndef QT_DEBUG
+void VideoReceiver::_startAudio()
 {
     // Run audio
     GError *error = NULL;
@@ -408,8 +408,7 @@ VideoReceiver::_startAudio()
     }
 }
 
-void
-VideoReceiver::setVolume(float vol)
+void VideoReceiver::setVolume(float vol)
 {
     if(vol < 0 || vol > 1) {
         vol = 1;
@@ -424,7 +423,7 @@ VideoReceiver::setVolume(float vol)
         qCDebug(VideoReceiverLog) << "No volume control";
     }
 }
-
+//#endif
 //-----------------------------------------------------------------------------
 void
 VideoReceiver::stop()

@@ -308,6 +308,9 @@ public slots:
     /** @brief Set the values for the manual control of the vehicle */
     void setExternalControlSetpoint(float roll, float pitch, float yaw, float thrust, quint16 buttons, int joystickMode);
 
+    /** @brief Set the values for the 6dof manual control of the vehicle using RC override (Only blueRobotics)*/
+    void setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, float thrust, quint16 buttons, int joystickMode,float lat ,float forward);
+
     /** @brief Set the values for the 6dof manual control of the vehicle */
 #ifndef __mobile__
     void setManual6DOFControlCommands(double x, double y, double z, double roll, double pitch, double yaw);

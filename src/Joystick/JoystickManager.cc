@@ -40,6 +40,7 @@ JoystickManager::~JoystickManager() {
         qDebug() << "Releasing joystick:" << i.key();
         delete i.value();
     }
+
     qDebug() << "Done";
 }
 
