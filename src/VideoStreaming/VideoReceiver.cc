@@ -83,7 +83,7 @@ VideoReceiver::VideoReceiver(QObject* parent)
     connect(this, &VideoReceiver::msgStateChangedReceived, this, &VideoReceiver::_handleStateChanged);
     connect(&_frameTimer, &QTimer::timeout, this, &VideoReceiver::_updateTimer);
     _frameTimer.start(1000);
-    _startAudio();
+    //_startAudio();
     loadSettings();
 #endif
 }
@@ -396,7 +396,7 @@ VideoReceiver::start()
 #endif
 }
 
-//#ifndef QT_DEBUG
+
 void VideoReceiver::_startAudio()
 {
     // Run audio
@@ -425,7 +425,7 @@ void VideoReceiver::setVolume(float vol)
         qCDebug(VideoReceiverLog) << "No volume control";
     }
 }
-//#endif
+
 //-----------------------------------------------------------------------------
 void
 VideoReceiver::stop()
