@@ -14,10 +14,12 @@
  *   @author Gus Grubba <mavlink@grubba.com>
  */
 
+
+
 #include "VideoReceiver.h"
 #include "SettingsManager.h"
 #include "QGCApplication.h"
-#include "VideoManager.h"
+//#include "VideoManager.h"
 
 #include <QDebug>
 #include <QUrl>
