@@ -111,8 +111,9 @@ install:
 
   # osx dependencies: qt, gstreamer, gstreamer-devel
   - if [ "${SPEC}" = "macx-clang" ]; then
-        wget --quiet https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/Qt5.11.0-clang_64-min.tar.bz2 &&
-        tar jxf Qt5.11.0-clang_64-min.tar.bz2 -C /tmp
+        wget --quiet http://qt.mirrors.tds.net/qt/archive/qt/5.7/5.7.1/qt-opensource-linux-x64-5.7.1.run &&
+        sudo chmod +x qt-opensource-linux-x64-5.7.1.run
+        ./qt-opensource-linux-x64-5.7.1.run
         ;
     fi
 
