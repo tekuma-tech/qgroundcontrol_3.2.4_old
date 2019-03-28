@@ -180,7 +180,7 @@ private:
     void _handleFTP(const mavlink_message_t& msg);
     void _handleCommandLong(const mavlink_message_t& msg);
     void _handleManualControl(const mavlink_message_t& msg);
-    void MockLink::_handleRCChannelOverride(const mavlink_message_t& msg);
+    void _handleRCChannelOverride(const mavlink_message_t& msg);
     void _handlePreFlightCalibration(const mavlink_command_long_t& request);
     void _handleLogRequestList(const mavlink_message_t& msg);
     void _handleLogRequestData(const mavlink_message_t& msg);
