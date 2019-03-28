@@ -16,13 +16,26 @@ matrix:
     fast_finish: true
     include:
         - os: linux
-          dist: trusty
+          dist: xenial
           env: SPEC=linux-g++-64 CONFIG=installer
           sudo: required
         - os: linux
-          dist: trusty
+          dist: xenial
           env: SPEC=linux-g++-64 CONFIG=debug
+          services: xvfb
           sudo: required
+        - os: android
+          language: android
+          env: SPEC=android-g++ CONFIG=installer
+          sudo: false
+        - os: osx
+          osx_image: xcode9.2
+          env: SPEC=macx-clang CONFIG=installer
+          sudo: required
+        - os: osx
+          osx_image: xcode9.2
+          env: SPEC=macx-ios-clang CONFIG=release
+          sudo: false
 # OSX builds pared back to installer only since travis sucks so bad we can't afford more than one'
 #        - os: osx
 #          osx_image: xcode8
@@ -61,15 +74,6 @@ before_install:
   - if [ "${CONFIG}" = "installer" ]; then
         cd ${TRAVIS_BUILD_DIR} && git fetch --unshallow && git fetch --all --tags;
     fi
-
-  # install ccache for osx/ios
-  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-        wget https://s3.amazonaws.com/px4-travis/toolchain/macos/ccache &&
-        chmod +x ccache && sudo mv ccache /usr/local/bin;
-    fi
-
-  # setup ccache
-  #- ccache -M 500MB && ccache -z
 
   # compile threads
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
