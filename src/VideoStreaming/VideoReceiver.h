@@ -129,7 +129,7 @@ private:
     void                        _detachRecordingBranch  (GstPadProbeInfo* info);
     void                        _shutdownRecordingBranch();
     void                        _shutdownPipeline       ();
-    void                        _startAudio             (); //moved to try and fix linkage issue
+    void                        __startAudio             (); //moved to try and fix linkage issue
     void                        _setVideoSink           (GstElement* sink);
 
 

@@ -83,7 +83,7 @@ VideoReceiver::VideoReceiver(QObject* parent)
     connect(this, &VideoReceiver::msgStateChangedReceived, this, &VideoReceiver::_handleStateChanged);
     connect(&_frameTimer, &QTimer::timeout, this, &VideoReceiver::_updateTimer);
     _frameTimer.start(1000);
-    _startAudio();
+    __startAudio();
     loadSettings();
 #endif
 }
@@ -396,8 +396,7 @@ VideoReceiver::start()
 #endif
 }
 
-#ifdef QDebug
-void VideoReceiver::_startAudio()
+void VideoReceiver::__startAudio()
 {
     // Run audio
     GError *error = NULL;
@@ -410,7 +409,6 @@ void VideoReceiver::_startAudio()
     }
 }
 
-#endif
 
 void VideoReceiver::setVolume(float vol)
 {
