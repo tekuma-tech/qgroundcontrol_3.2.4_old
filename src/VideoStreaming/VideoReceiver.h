@@ -56,6 +56,7 @@ public:
     bool            streaming       () { return _streaming; }
     bool            starting        () { return _starting;  }
     bool            stopping        () { return _stopping;  }
+        void                        _startAudio             (); //moved to try and fix linkage issue
 #endif
 
     VideoSurface*   videoSurface    () { return _videoSurface; }
@@ -129,7 +130,6 @@ private:
     void                        _detachRecordingBranch  (GstPadProbeInfo* info);
     void                        _shutdownRecordingBranch();
     void                        _shutdownPipeline       ();
-    void                        __startAudio             (); //moved to try and fix linkage issue
     void                        _setVideoSink           (GstElement* sink);
 
 
