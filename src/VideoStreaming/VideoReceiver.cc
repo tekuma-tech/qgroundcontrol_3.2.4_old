@@ -395,7 +395,7 @@ VideoReceiver::start()
     _starting = false;
 #endif
 }
-/*
+
 void VideoReceiver::_startAudio()
 {
     // Run audio
@@ -425,7 +425,7 @@ void VideoReceiver::setVolume(float vol)
         qCDebug(VideoReceiverLog) << "No volume control";
     }
 }
-*/
+
 //-----------------------------------------------------------------------------
 void
 VideoReceiver::stop()
