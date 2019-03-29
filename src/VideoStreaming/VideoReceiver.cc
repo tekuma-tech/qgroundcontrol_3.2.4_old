@@ -396,6 +396,7 @@ VideoReceiver::start()
 #endif
 }
 
+#ifdef QDebug
 void VideoReceiver::_startAudio()
 {
     // Run audio
@@ -408,6 +409,8 @@ void VideoReceiver::_startAudio()
         _gstVolume = gst_bin_get_by_name(GST_BIN(_audioPipeline), "volume0");
     }
 }
+
+#endif
 
 void VideoReceiver::setVolume(float vol)
 {
