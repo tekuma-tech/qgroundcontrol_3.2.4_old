@@ -57,14 +57,9 @@ cache:
     - $HOME/.ccache
 
 before_install:
-  # fetch entire git repo to properly determine the version
-  - sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 1397BC53640DB551
-  - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-
-  # For Qt 5.7
-  - sudo add-apt-repository --yes ppa:beineri/opt-qt57-trusty
-  - sudo apt-get install -qq g++-6 qt57-meta-full
-  
+  - wget http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run
+  - chmod +x qt-opensource-linux-x64-5.7.0.run
+  - ./qt-opensource-linux-x64-5.7.0.run
   - if [ "${CONFIG}" = "installer" ]; then
         cd ${TRAVIS_BUILD_DIR} && git fetch --unshallow && git fetch --all --tags;
     fi
