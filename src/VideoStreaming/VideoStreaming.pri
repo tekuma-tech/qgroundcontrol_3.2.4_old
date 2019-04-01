@@ -48,12 +48,20 @@ LinuxBuild {
     }
 } else:WindowsBuild {
     #- gstreamer installed by default under c:/gstreamer
-    if(contains($HOMEDRIVE,"D:") || contains($HOMEDRIVE,"d:")){
-        GST_ROOT = d:/gstreamer/1.0/x86
-    }
-    else{
+    exists(c:/gstreamer/1.0/x86){
         GST_ROOT = c:/gstreamer/1.0/x86
     }
+    else{
+        #Place your local gstream install here if it is not installed in C:
+        #If you change this, please at this file to the gitignore file
+        GST_ROOT = d:/gstreamer/1.0/x86
+    }
+#    if(contains($HOMEDRIVE,"D:") || contains($HOMEDRIVE,"d:")){
+#        GST_ROOT = d:/gstreamer/1.0/x86
+#    }
+#    else{
+#        GST_ROOT = c:/gstreamer/1.0/x86
+#    }
     exists($$GST_ROOT) {
         CONFIG      += VideoEnabled
 

@@ -84,16 +84,16 @@ const JoystickConfigController::stateMachineEntry* JoystickConfigController::_ge
     static const char* msgBegin =           "Allow all sticks to center as shown in diagram.\n\nClick Next to continue";
     static const char* msgThrottleUp =      "Move the Throttle stick all the way up and hold it there...";
     static const char* msgThrottleDown =    "Move the Throttle stick all the way down and hold it there...";
-    static const char* msgYawLeft =         "Move the Yaw stick all the way to the left and hold it there...";
-    static const char* msgYawRight =        "Move the Yaw stick all the way to the right and hold it there...";
-    static const char* msgRollLeft =        "Move the Roll stick all the way to the left and hold it there...";
-    static const char* msgRollRight =       "Move the Roll stick all the way to the right and hold it there...";
-    static const char* msgPitchDown =       "Move the Pitch stick all the way down and hold it there...";
-    static const char* msgPitchUp =         "Move the Pitch stick all the way up and hold it there...";
-    static const char* msgForwardDown =       "Move the Forward stick all the way down and hold it there...";
-    static const char* msgForwardUp =       "Move the Forward stick all the way up and hold it there...";
-    static const char* msgLatUp =           "Move the Lateral stick all the way up and hold it there...";
-    static const char* msgLatDown =           "Move the Lateral stick all the way down and hold it there...";
+    static const char* msgYawLeft =         "Rotate the Yaw stick all the way to the left and hold it there...";
+    static const char* msgYawRight =        "Rotate the Yaw stick all the way to the right and hold it there...";
+    static const char* msgRollLeft =        "Rotate the Roll stick all the way to the left and hold it there...";
+    static const char* msgRollRight =       "Rotate the Roll stick all the way to the right and hold it there...";
+    static const char* msgPitchDown =       "Rotate the Pitch stick all the way back and hold it there...";
+    static const char* msgPitchUp =         "Rotate the Pitch stick all the way forward and hold it there...";
+    static const char* msgForwardDown =     "Move the Forward stick all the way back and hold it there...";
+    static const char* msgForwardUp =       "Move the Forward stick all the way forward and hold it there...";
+    static const char* msgLatUp =           "Move the Lateral stick all the way to the right and hold it there...";
+    static const char* msgLatDown =         "Move the Lateral stick all the way to the left and hold it there...";
 
     static const char* msgPitchCenter =     "Release the sticks to move back to center...";
     static const char* msgComplete =        "All settings have been captured. Click Next to enable the joystick.";
