@@ -44,7 +44,7 @@ addons:
     packages:
     - ccache
     - espeak
-    - qtbase5-dev
+    - qtbase57-dev
     - libespeak-dev
     - libgstreamer-plugins-base1.0-dev
     - libgstreamer1.0-0:amd64
@@ -88,9 +88,9 @@ install:
         #sh -e /etc/init.d/xvfb start
         #sudo apt-get install qt57base qt57svg qt57charts-no-lgpl qt57xmlpatterns
         #source /opt/qt57/bin/qt57-env.sh
-  - if [ "${SPEC}" = "linux-g++-64" ]; then
+  #- if [ "${SPEC}" = "linux-g++-64" ]; then
 
-    fi
+   # fi
 
   # android dependencies: qt, gstreamer, android-ndk
   - if [ "${SPEC}" = "android-g++" ]; then
