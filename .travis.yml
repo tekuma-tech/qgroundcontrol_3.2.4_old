@@ -83,14 +83,16 @@ before_install:
 
 install:
   # linux dependencies: qt
-  - if [ "${SPEC}" = "linux-g++-64" ]; then
-        #wget https://s3.amazonaws.com/downloads.bluerobotics.com/QGC/dependencies/Qt5.7.1-linux-min.tar.bz2 && 
+          #wget https://s3.amazonaws.com/downloads.bluerobotics.com/QGC/dependencies/Qt5.7.1-linux-min.tar.bz2 && 
         #tar jxf Qt5.7.1-linux-min.tar.bz2 -C /tmp &&
         #export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
         #export DISPLAY=:99.0 &&
         #sh -e /etc/init.d/xvfb start
         #sudo apt-get install qt57base qt57svg qt57charts-no-lgpl qt57xmlpatterns
         #source /opt/qt57/bin/qt57-env.sh
+  - if [ "${SPEC}" = "linux-g++-64" ]; then
+        sudo apt-get install qt58base qt58svg qt58charts-no-lgpl
+        source /opt/qt58/bin/qt58-env.sh
         ;
     fi
 
