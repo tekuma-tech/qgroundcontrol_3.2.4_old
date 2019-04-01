@@ -61,7 +61,8 @@ before_install:
   - if [ "${CONFIG}" = "installer" ]; then
         cd ${TRAVIS_BUILD_DIR} && git fetch --unshallow && git fetch --all --tags;
     fi
-
+    - sudo add-apt-repository ppa:beineri/opt-qt57-trusty -y
+    - sudo apt-get update
   # install ccache for osx/ios
   - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
         wget https://s3.amazonaws.com/px4-travis/toolchain/macos/ccache &&
@@ -81,11 +82,13 @@ before_install:
 install:
   # linux dependencies: qt
   - if [ "${SPEC}" = "linux-g++-64" ]; then
-        wget https://s3.amazonaws.com/downloads.bluerobotics.com/QGC/dependencies/Qt5.7.1-linux-min.tar.bz2 && 
-        tar jxf Qt5.7.1-linux-min.tar.bz2 -C /tmp &&
-        export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
-        export DISPLAY=:99.0 &&
-        sh -e /etc/init.d/xvfb start
+        #wget https://s3.amazonaws.com/downloads.bluerobotics.com/QGC/dependencies/Qt5.7.1-linux-min.tar.bz2 && 
+        #tar jxf Qt5.7.1-linux-min.tar.bz2 -C /tmp &&
+        #export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
+        #export DISPLAY=:99.0 &&
+        #sh -e /etc/init.d/xvfb start
+        - sudo apt-get install qt57base qt57svg qt58charts-no-lgpl qt58xmlpatterns
+        - source /opt/qt57/bin/qt57-env.sh
         ;
     fi
 
