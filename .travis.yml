@@ -89,7 +89,7 @@ install:
         #source /opt/qt57/bin/qt57-env.sh
   - if [ "${SPEC}" = "linux-g++-64" ]; then
         sudo apt-get update -q
-        sudo apt-get install qt57base qt57svg qt57charts-no-lgpl
+        sudo apt-get install qt57base
         source /opt/qt57/bin/qt57-env.sh
         ;
     fi
