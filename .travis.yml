@@ -44,7 +44,6 @@ addons:
     packages:
     - ccache
     - espeak
-    - qtbase58-dev
     - libespeak-dev
     - libgstreamer-plugins-base1.0-dev
     - libgstreamer1.0-0:amd64
@@ -59,6 +58,13 @@ cache:
 
 before_install:
   # fetch entire git repo to properly determine the version
+  - sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 1397BC53640DB551
+  - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+
+  # For Qt 5.7
+  - sudo add-apt-repository --yes ppa:beineri/opt-qt57-trusty
+  - sudo apt-get install -qq g++-6 qt57-meta-full
+  
   - if [ "${CONFIG}" = "installer" ]; then
         cd ${TRAVIS_BUILD_DIR} && git fetch --unshallow && git fetch --all --tags;
     fi
