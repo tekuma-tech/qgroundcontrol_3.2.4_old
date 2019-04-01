@@ -93,6 +93,7 @@ install:
   - sudo add-apt-repository ppa:beineri/opt-qt571-trusty
   - sudo apt update
   - sudo apt install qt57-meta-full -y
+  source /opt/qt57/bin/qt57-env.sh
   # android dependencies: qt, gstreamer, android-ndk
   - if [ "${SPEC}" = "android-g++" ]; then
         wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/Qt5.7.1-android-min.tar.bz2 &&
