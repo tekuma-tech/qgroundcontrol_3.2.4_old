@@ -88,10 +88,8 @@ install:
         #sudo apt-get install qt57base qt57svg qt57charts-no-lgpl qt57xmlpatterns
         #source /opt/qt57/bin/qt57-env.sh
   - if [ "${SPEC}" = "linux-g++-64" ]; then
-        sudo apt-get update -q
-        sudo apt-get install qt57base
-        source /opt/qt57/bin/qt57-env.sh
-        ;
+        sudo apt-get install -qq qt57base; 
+        source /opt/qt57/bin/qt57-env.sh; 
     fi
 
   # android dependencies: qt, gstreamer, android-ndk
