@@ -57,7 +57,7 @@ cache:
     - $HOME/.ccache
 
 before_install:
-  - wget http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run
+  - wget http://download.qt.io/archive/qt/5.7/5.7.1/qt-opensource-linux-x64-5.7.1.run
   - chmod +x qt-opensource-linux-x64-5.7.0.run
   - ./qt-opensource-linux-x64-5.7.0.run
   - if [ "${CONFIG}" = "installer" ]; then
