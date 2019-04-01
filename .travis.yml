@@ -92,7 +92,7 @@ install:
    # fi
   - sudo add-apt-repository ppa:beineri/opt-qt571-trusty
   - sudo apt update
-  - sudo apt-get install -qq g++-6 qt57-meta-full
+  - sudo apt-get install -qq g++-6 qt57-meta-full -y
   - source /opt/qt57/bin/qt57-env.sh
   # android dependencies: qt, gstreamer, android-ndk
   - if [ "${SPEC}" = "android-g++" ]; then
