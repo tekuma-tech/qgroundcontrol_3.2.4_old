@@ -90,7 +90,7 @@ install:
   #- if [ "${SPEC}" = "linux-g++-64" ]; then
 
    # fi
-  - sudo add-apt-repository ppa:beineri/opt-qt-5.9.7-trusty
+  - sudo add-apt-repository ppa:beineri/opt-qt-597-trusty
   - sudo apt update
   - sudo apt install qt59-meta-full
   # android dependencies: qt, gstreamer, android-ndk
