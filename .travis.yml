@@ -44,6 +44,7 @@ addons:
     packages:
     - ccache
     - espeak
+    - qtbase59-dev
     - libespeak-dev
     - libgstreamer-plugins-base1.0-dev
     - libgstreamer1.0-0:amd64
@@ -57,9 +58,7 @@ cache:
     - $HOME/.ccache
 
 before_install:
-  - wget http://download.qt.io/archive/qt/5.7/5.7.1/qt-opensource-linux-x64-5.7.1.run
-  - chmod +x qt-opensource-linux-x64-5.7.0.run
-  - ./qt-opensource-linux-x64-5.7.0.run
+  # fetch entire git repo to properly determine the version
   - if [ "${CONFIG}" = "installer" ]; then
         cd ${TRAVIS_BUILD_DIR} && git fetch --unshallow && git fetch --all --tags;
     fi
