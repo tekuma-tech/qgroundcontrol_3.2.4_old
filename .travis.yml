@@ -16,24 +16,25 @@
     matrix:
         fast_finish: true
         include:
-            - os: linux
-              env: SPEC=linux-g++-64 CONFIG=installer
-              sudo: required
+            #- os: linux
+            #  env: SPEC=linux-g++-64 CONFIG=installer
+            #  sudo: required
             - os: linux
               env: SPEC=linux-g++-64 CONFIG=debug
+              services: xvfb
               sudo: required
             - os: android
               language: android
               env: SPEC=android-g++ CONFIG=installer
               sudo: false
-            - os: osx
-              osx_image: xcode9.2
-              env: SPEC=macx-clang CONFIG=installer
-              sudo: required
-            - os: osx
-              osx_image: xcode9.2
-              env: SPEC=macx-ios-clang CONFIG=release
-              sudo: false
+            #- os: osx
+            #  osx_image: xcode9.2
+            #  env: SPEC=macx-clang CONFIG=installer
+            #  sudo: required
+            #- os: osx
+            #  osx_image: xcode9.2
+            #  env: SPEC=macx-ios-clang CONFIG=release
+            #  sudo: false
     # OSX builds pared back to installer only since travis sucks so bad we can't afford more than one'
     #        - os: osx
     #          osx_image: xcode8
@@ -49,6 +50,10 @@
         - android-21
         - build-tools-21.1.1
         - platform-tools
+        - add-on
+        - ccache
+        - extra
+        - wget
 
     addons:
       apt:
@@ -105,9 +110,11 @@
       - if [ "${SPEC}" = "linux-g++-64" ]; then
             sudo add-apt-repository ppa:beineri/opt-qt571-xenial -y &&
             sudo apt-get update && 
-            sudo apt-get install qt57-meta-minimal qt57base qt57svg qt57location qt57multimedia qt57serialport qt57quickcontrols2 qt57tools qt57script &&
+            sudo apt-get install qt57-meta-minimal qt57base &&
+            sudo apt-get install qt57svg qt57location qt57multimedia qt57serialport qt57quickcontrols qt57quickcontrols2 qt57tools qt57script qt57serialbus&&
             wget -O libicu56.tar.gz "https://docs.google.com/uc?id=1uwbzpVrHBvSjJ-9c9jSF1IsFAOmEqOPq&export=download" &&
             sudo tar -zxvf libicu56.tar.gz -C /opt/qt57/lib/ &&
+            export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
             source /opt/qt57/bin/qt57-env.sh
             ;
         fi
@@ -118,9 +125,9 @@
             #tar jxf Qt5.7.1-android-min.tar.bz2 -C /tmp &&
       # android dependencies: qt, gstreamer, android-ndk
       - if [ "${SPEC}" = "android-g++" ]; then
-            sudo add-apt-repository ppa:beineri/opt-qt571-xenial -y
-            sudo apt-get update
-            sudo apt-get install qt57-meta-minimal qt57base qt57svg qt57location qt57multimedia qt57serialport qt57quickcontrols2 qt57tools qt57script
+            wget -c https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run &&
+            extract-qt-installer --list-packages qt-unified-linux-x64-online.run &&
+            install-qt-5.9.5-android-19 &&
             wget https://gstreamer.freedesktop.org/data/pkg/android/1.14.0/gstreamer-1.0-android-universal-1.14.0.tar.bz2 &&
             mkdir -p ${TRAVIS_BUILD_DIR}/gstreamer-1.0-android-armv7-1.5.2 &&
             tar jxf gstreamer-1.0-android-armv7-1.5.2.tar.bz2 -C ${TRAVIS_BUILD_DIR}/gstreamer-1.0-android-armv7-1.5.2 &&
