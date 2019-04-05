@@ -10,6 +10,7 @@
         - JOBS=4
         - QT_FATAL_WARNINGS=1
         - SHADOW_BUILD_DIR=/tmp/shadow_build_dir
+        - export VERBOSE=1
         # ANDROID_STOREPASS
         - secure: RGovyUnMw3fp/bHZi058JvANT1rYmNqrsuSYew0cIgirO6YbMHr/rsjwCm1FTYpBl8s1zgr+u2b8ftYnfnCz2YT+Aip4NWrVYpVU0FEmfytGILrnUS0pjlt8m7fU9AKR1ElOSll7yw7e1kftynN39Q321etvwbLZcXon6zz0suE=
 
@@ -35,6 +36,7 @@
             #  osx_image: xcode9.2
             #  env: SPEC=macx-ios-clang CONFIG=release
             #  sudo: false
+    # OSX builds pared back to installer only since travis sucks so bad we can't afford more than one'
     # OSX builds pared back to installer only since travis sucks so bad we can't afford more than one'
     #        - os: osx
     #          osx_image: xcode8
@@ -125,9 +127,9 @@
             #tar jxf Qt5.7.1-android-min.tar.bz2 -C /tmp &&
       # android dependencies: qt, gstreamer, android-ndk
       - if [ "${SPEC}" = "android-g++" ]; then
-            wget -c https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run &&
-            extract-qt-installer --list-packages qt-unified-linux-x64-online.run &&
-            install-qt-5.9.5-android-19 &&
+            wget -c https://download.qt.io/archive/qt/5.7/5.7.1/qt-opensource-linux-x64-android-5.7.1.run &&
+            chmod +x qt-opensource-linux-x64-android-5.7.1.run &&
+            ./qt-opensource-linux-x64-android-5.7.1.run &&
             wget https://gstreamer.freedesktop.org/data/pkg/android/1.14.0/gstreamer-1.0-android-universal-1.14.0.tar.bz2 &&
             mkdir -p ${TRAVIS_BUILD_DIR}/gstreamer-1.0-android-armv7-1.5.2 &&
             tar jxf gstreamer-1.0-android-armv7-1.5.2.tar.bz2 -C ${TRAVIS_BUILD_DIR}/gstreamer-1.0-android-armv7-1.5.2 &&
