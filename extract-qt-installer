@@ -141,7 +141,7 @@ function Controller() {
         gui.clickButton(buttons.NextButton);
         tryFinish();
     });
-    installer.setMessageBoxAutomaticAnswer("OverwriteTargetDirectory", QMessageBox.Yes);
+    installer.setMessageBoxAutomaticAnswer("OverwriteTargetDirectory", QMessageBox.No);
     installer.setMessageBoxAutomaticAnswer("installationErrorWithRetry", QMessageBox.Ignore);
     
     // Allow to cancel installation for arguments --list-packages
