@@ -132,11 +132,12 @@
             echo qtDownloaded &&
             chmod +x qt-opensource-linux-x64-android-5.7.1.run &&
             source ${TRAVIS_BUILD_DIR}/path.env
-            extract-qt-installer qt-opensource-linux-x64-android-5.7.1.run &&
+            extract-qt-installer qt-opensource-linux-x64-android-5.7.1.run $PWD/Qt&&
             echo qtInstall &&
-            cd /opt && 
+            cd $PWD/Qt/ && 
             sudo ls -l &&
-            source /opt/qt57/bin/qt57-env.sh
+            export PATH=$PWD/Qt/5.7/gcc_64/bin:$PATH
+            source $PWD/Qt/57/bin/qt57-env.sh
             wget -q https://gstreamer.freedesktop.org/data/pkg/android/1.14.0/gstreamer-1.0-android-universal-1.14.0.tar.bz2 &&
             echo DownloadingGstreamer &&
             mkdir -p ${TRAVIS_BUILD_DIR}/gstreamer-1.0-android-armv7-1.14.0 &&
