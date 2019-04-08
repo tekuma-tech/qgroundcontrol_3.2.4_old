@@ -1,253 +1,254 @@
-    # if you update this file, please consider updating Vagrantfile too
-    
-    language: cpp
-    dist: xenial
+        # if you update this file, please consider updating Vagrantfile too
+        
+        language: cpp
+        dist: xenial
 
-    env:
-      global:
-        - CCACHE_CPP2=1
-        - CCACHE_DISABLE=1
-        - JOBS=4
-        - QT_FATAL_WARNINGS=1
-        - SHADOW_BUILD_DIR=/tmp/shadow_build_dir
-        - export VERBOSE=1
-        # ANDROID_STOREPASS
-        - secure: RGovyUnMw3fp/bHZi058JvANT1rYmNqrsuSYew0cIgirO6YbMHr/rsjwCm1FTYpBl8s1zgr+u2b8ftYnfnCz2YT+Aip4NWrVYpVU0FEmfytGILrnUS0pjlt8m7fU9AKR1ElOSll7yw7e1kftynN39Q321etvwbLZcXon6zz0suE=
+        env:
+          global:
+            - CCACHE_CPP2=1
+            - CCACHE_DISABLE=1
+            - JOBS=4
+            - QT_FATAL_WARNINGS=1
+            - SHADOW_BUILD_DIR=/tmp/shadow_build_dir
+            - export VERBOSE=1
+            # ANDROID_STOREPASS
+            - secure: RGovyUnMw3fp/bHZi058JvANT1rYmNqrsuSYew0cIgirO6YbMHr/rsjwCm1FTYpBl8s1zgr+u2b8ftYnfnCz2YT+Aip4NWrVYpVU0FEmfytGILrnUS0pjlt8m7fU9AKR1ElOSll7yw7e1kftynN39Q321etvwbLZcXon6zz0suE=
 
-    matrix:
-        fast_finish: true
-        include:
-            #- os: linux
-            #  env: SPEC=linux-g++-64 CONFIG=installer
-            #  sudo: required
-            #- os: linux
-            #  env: SPEC=linux-g++-64 CONFIG=debug
-            #  services: xvfb
-            #  sudo: required
-            - os: android
-              language: android
-              env: SPEC=android-g++ CONFIG=installer
-              services: xvfb
-              sudo: false
-            #- os: osx
-            #  osx_image: xcode9.2
-            #  env: SPEC=macx-clang CONFIG=installer
-            #  sudo: required
-            #- os: osx
-            #  osx_image: xcode9.2
-            #  env: SPEC=macx-ios-clang CONFIG=release
-            #  sudo: false
-    # OSX builds pared back to installer only since travis sucks so bad we can't afford more than one'
-    # OSX builds pared back to installer only since travis sucks so bad we can't afford more than one'
-    #        - os: osx
-    #          osx_image: xcode8
-    #          env: SPEC=macx-clang CONFIG=debug
-    #          sudo: required
-    #        - os: osx
-    #          osx_image: xcode8
-    #          env: SPEC=macx-ios-clang CONFIG=release
-    #          sudo: false
+        matrix:
+            fast_finish: true
+            include:
+                #- os: linux
+                #  env: SPEC=linux-g++-64 CONFIG=installer
+                #  sudo: required
+                #- os: linux
+                #  env: SPEC=linux-g++-64 CONFIG=debug
+                #  services: xvfb
+                #  sudo: required
+                - os: android
+                  language: android
+                  env: SPEC=android-g++ CONFIG=installer
+                  services: xvfb
+                  sudo: false
+                #- os: osx
+                #  osx_image: xcode9.2
+                #  env: SPEC=macx-clang CONFIG=installer
+                #  sudo: required
+                #- os: osx
+                #  osx_image: xcode9.2
+                #  env: SPEC=macx-ios-clang CONFIG=release
+                #  sudo: false
+        # OSX builds pared back to installer only since travis sucks so bad we can't afford more than one'
+        # OSX builds pared back to installer only since travis sucks so bad we can't afford more than one'
+        #        - os: osx
+        #          osx_image: xcode8
+        #          env: SPEC=macx-clang CONFIG=debug
+        #          sudo: required
+        #        - os: osx
+        #          osx_image: xcode8
+        #          env: SPEC=macx-ios-clang CONFIG=release
+        #          sudo: false
 
-    android:
-      components:
-        - android-21
-        - build-tools-21.1.1
-        - platform-tools
-        - add-on
-        - ccache
-        - extra
-        - wget
+        android:
+          components:
+            - android-21
+            - build-tools-21.1.1
+            - platform-tools
+            - add-on
+            - ccache
+            - extra
+            - wget
 
-    addons:
-      apt:
-        packages:
-        - ccache
-        - espeak
-        - libespeak-dev
-        - libgstreamer-plugins-base1.0-dev
-        - libgstreamer1.0-0:amd64
-        - libgstreamer1.0-dev
-        - gstreamer1.0-tools
-        - libsdl2-dev
-        - libudev-dev
-        - wget
+        addons:
+          apt:
+            packages:
+            - ccache
+            - espeak
+            - libespeak-dev
+            - libgstreamer-plugins-base1.0-dev
+            - libgstreamer1.0-0:amd64
+            - libgstreamer1.0-dev
+            - gstreamer1.0-tools
+            - libsdl2-dev
+            - libudev-dev
+            - wget
 
-    cache:
-      directories:
-        - $HOME/.ccache
+        cache:
+          directories:
+            - $HOME/.ccache
 
-    before_install:
-      
-      # fetch entire git repo to properly determine the version
-      - if [ "${CONFIG}" = "installer" ]; then
-            cd ${TRAVIS_BUILD_DIR} && git fetch --unshallow && git fetch --all --tags;
-        fi
-      
-      # install ccache for osx/ios
-      - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-            wget https://s3.amazonaws.com/px4-travis/toolchain/macos/ccache &&
-            chmod +x ccache && sudo mv ccache /usr/local/bin;
-        fi
+        before_install:
+          
+          # fetch entire git repo to properly determine the version
+          - if [ "${CONFIG}" = "installer" ]; then
+                cd ${TRAVIS_BUILD_DIR} && git fetch --unshallow && git fetch --all --tags;
+            fi
+          
+          # install ccache for osx/ios
+          - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+                wget https://s3.amazonaws.com/px4-travis/toolchain/macos/ccache &&
+                chmod +x ccache && sudo mv ccache /usr/local/bin;
+            fi
 
-      # setup ccache
-      #- ccache -M 500MB && ccache -z
+          # setup ccache
+          #- ccache -M 500MB && ccache -z
+          - if [ "${SPEC}" = "android-g++" ]; then
+                git clone --depth=50 https://github.com/benlau/qtci.git &&
+                source qtci/path.env
+                ;
+            fi    
+          # compile threads
+          - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+                export JOBS=$((`cat /proc/cpuinfo | grep -c ^processor`+1));
+            elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+                export JOBS=$((`sysctl -n hw.ncpu`+1));
+            fi
 
-      # compile threads
-      - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-            export JOBS=$((`cat /proc/cpuinfo | grep -c ^processor`+1));
-        elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-            export JOBS=$((`sysctl -n hw.ncpu`+1));
-        fi
-
-    install:
-       #linux dependencies: qt
-            #wget https://s3.amazonaws.com/downloads.bluerobotics.com/QGC/dependencies/Qt5.7.1-linux-min.tar.bz2 && 
-            #tar jxf Qt5.7.1-linux-min.tar.bz2 -C /tmp &&
-            #export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
-            #export DISPLAY=:99.0 &&
-            #sh -e /etc/init.d/xvfb start
-            #sudo apt-get install qt57base qt57svg qt57charts-no-lgpl qt57xmlpatterns
-            #source /opt/qt57/bin/qt57-env.sh
+        install:
+           #linux dependencies: qt
+                #wget https://s3.amazonaws.com/downloads.bluerobotics.com/QGC/dependencies/Qt5.7.1-linux-min.tar.bz2 && 
+                #tar jxf Qt5.7.1-linux-min.tar.bz2 -C /tmp &&
+                #export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
+                #export DISPLAY=:99.0 &&
+                #sh -e /etc/init.d/xvfb start
+                #sudo apt-get install qt57base qt57svg qt57charts-no-lgpl qt57xmlpatterns
+                #source /opt/qt57/bin/qt57-env.sh
 
 
-      - if [ "${SPEC}" = "linux-g++-64" ]; then
-            sudo add-apt-repository ppa:beineri/opt-qt571-xenial -y &&
-            sudo apt-get update && 
-            sudo apt-get install qt57-meta-minimal qt57base &&
-            sudo apt-get install qt57svg qt57location qt57multimedia qt57serialport qt57quickcontrols qt57quickcontrols2 qt57tools qt57script qt57serialbus&&
-            wget -O libicu56.tar.gz "https://docs.google.com/uc?id=1uwbzpVrHBvSjJ-9c9jSF1IsFAOmEqOPq&export=download" &&
-            sudo tar -zxvf libicu56.tar.gz -C /opt/qt57/lib/ &&
-            export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
-            source /opt/qt57/bin/qt57-env.sh
-            ;
-        fi
-      
-      #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/gstreamer-1.0-android-armv7-1.5.2.tar.bz2 &&
-      
-              #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/Qt5.7.1-android-min.tar.bz2 &&
-            #tar jxf Qt5.7.1-android-min.tar.bz2 -C /tmp &&
-      # android dependencies: qt, gstreamer, android-ndk
-      - if [ "${SPEC}" = "android-g++" ]; then
-            wget -q https://download.qt.io/archive/qt/5.7/5.7.1/qt-opensource-linux-x64-android-5.7.1.run &&
-            echo qtDownloaded &&
-            chmod +x qt-opensource-linux-x64-android-5.7.1.run &&
-            source ${TRAVIS_BUILD_DIR}/path.env
-            extract-qt-installer qt-opensource-linux-x64-android-5.7.1.run $PWD/Qt&&
-            echo qtInstall &&
-            cd $PWD/Qt/ && 
-            sudo ls -l &&
-            export PATH=$PWD/Qt/5.7/gcc_64/bin:$PATH
-            source $PWD/Qt/57/bin/qt57-env.sh
-            wget -q https://gstreamer.freedesktop.org/data/pkg/android/1.14.0/gstreamer-1.0-android-universal-1.14.0.tar.bz2 &&
-            echo DownloadingGstreamer &&
-            mkdir -p ${TRAVIS_BUILD_DIR}/gstreamer-1.0-android-armv7-1.14.0 &&
-            tar jxf gstreamer-1.0-android-universal-1.14.0.tar.bz2  -C ${TRAVIS_BUILD_DIR}/gstreamer-1.0-android-armv7-1.14.0 &&
-            wget -q http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin &&
-            chmod +x android-ndk-r10e-linux-x86_64.bin &&
-            ./android-ndk-r10e-linux-x86_64.bin > /dev/null &&
-            export ANDROID_NDK_ROOT=`pwd`/android-ndk-r10e &&
-            export ANDROID_SDK_ROOT=/usr/local/android-sdk &&
-            export PATH=/tmp/Qt5.7-android/5.7/android_armv7/bin:`pwd`/android-ndk-r10e:$PATH && echo $PATH
-            ;
-        fi
+          - if [ "${SPEC}" = "linux-g++-64" ]; then
+                sudo add-apt-repository ppa:beineri/opt-qt571-xenial -y &&
+                sudo apt-get update && 
+                sudo apt-get install qt57-meta-minimal qt57base &&
+                sudo apt-get install qt57svg qt57location qt57multimedia qt57serialport qt57quickcontrols qt57quickcontrols2 qt57tools qt57script qt57serialbus &&
+                wget -O libicu56.tar.gz "https://docs.google.com/uc?id=1uwbzpVrHBvSjJ-9c9jSF1IsFAOmEqOPq&export=download" &&
+                sudo tar -zxvf libicu56.tar.gz -C /opt/qt57/lib/ &&
+                export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
+                source /opt/qt57/bin/qt57-env.sh
+                ;
+            fi
+          
+          #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/gstreamer-1.0-android-armv7-1.5.2.tar.bz2 &&
+          
+                  #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/Qt5.7.1-android-min.tar.bz2 &&
+                #tar jxf Qt5.7.1-android-min.tar.bz2 -C /tmp &&
+          # android dependencies: qt, gstreamer, android-ndk
+          - if [ "${SPEC}" = "android-g++" ]; then
+                source qtci/path.env &&
+                wget -q https://download.qt.io/archive/qt/5.7/5.7.1/qt-opensource-linux-x64-android-5.7.1.run &&
+                echo qtDownloaded &&
+                sudo extract-qt-installer qt-opensource-linux-x64-android-5.7.1.run /opt/Qt &&
+                echo qtInstall &&
+                export PATH=$PWD/Qt/5.7/gcc_64/bin:$PATH
+                source $PWD/Qt/57/bin/qt57-env.sh
+                wget -q https://gstreamer.freedesktop.org/data/pkg/android/1.14.0/gstreamer-1.0-android-universal-1.14.0.tar.bz2 &&
+                echo DownloadingGstreamer &&
+                mkdir -p ${TRAVIS_BUILD_DIR}/gstreamer-1.0-android-armv7-1.14.0 &&
+                tar jxf gstreamer-1.0-android-universal-1.14.0.tar.bz2  -C ${TRAVIS_BUILD_DIR}/gstreamer-1.0-android-armv7-1.14.0 &&
+                wget -q http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin &&
+                chmod +x android-ndk-r10e-linux-x86_64.bin &&
+                ./android-ndk-r10e-linux-x86_64.bin > /dev/null &&
+                export ANDROID_NDK_ROOT=`pwd`/android-ndk-r10e &&
+                export ANDROID_SDK_ROOT=/usr/local/android-sdk &&
+                export PATH=/tmp/Qt5.7-android/5.7/android_armv7/bin:`pwd`/android-ndk-r10e:$PATH && echo $PATH
+                ;
+            fi
 
-      # osx dependencies: qt, gstreamer, gstreamer-devel
-            #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/Qt5.7.1-mac-clang-min.tar.bz2 &&
-            #tar jxf Qt5.7.1-mac-clang-min.tar.bz2 -C /tmp &&
-            
-      - if [ "${SPEC}" = "macx-clang" ]; then
-            wget https://gstreamer.freedesktop.org/data/pkg/osx/1.14.0/gstreamer-1.0-1.14.0-x86_64.pkg &&
-            sudo installer -verboseR -pkg gstreamer-1.0-1.14.0-x86_64.pkg -target / &&
-            wget https://gstreamer.freedesktop.org/data/pkg/osx/1.14.0/gstreamer-1.0-devel-1.14.0-x86_64.pkg &&
-            sudo installer -verboseR -pkg gstreamer-1.0-devel-1.14.0-x86_64.pkg -target / &&
-            export QT_DIR=Qt5.7-mac-clang/5.7/clang_64 &&
-            export QT_QPA_PLATFORM_PLUGIN_PATH=/tmp/$QT_DIR/plugins &&
-            export QML2_IMPORT_PATH=/tmp/$QT_DIR/qml &&
-            export PATH=/tmp/$QT_DIR/bin:$PATH
-            ;
-        fi
+          # osx dependencies: qt, gstreamer, gstreamer-devel
+                #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/Qt5.7.1-mac-clang-min.tar.bz2 &&
+                #tar jxf Qt5.7.1-mac-clang-min.tar.bz2 -C /tmp &&
+                
+          - if [ "${SPEC}" = "macx-clang" ]; then
+                wget https://gstreamer.freedesktop.org/data/pkg/osx/1.14.0/gstreamer-1.0-1.14.0-x86_64.pkg &&
+                sudo installer -verboseR -pkg gstreamer-1.0-1.14.0-x86_64.pkg -target / &&
+                wget https://gstreamer.freedesktop.org/data/pkg/osx/1.14.0/gstreamer-1.0-devel-1.14.0-x86_64.pkg &&
+                sudo installer -verboseR -pkg gstreamer-1.0-devel-1.14.0-x86_64.pkg -target / &&
+                export QT_DIR=Qt5.7-mac-clang/5.7/clang_64 &&
+                export QT_QPA_PLATFORM_PLUGIN_PATH=/tmp/$QT_DIR/plugins &&
+                export QML2_IMPORT_PATH=/tmp/$QT_DIR/qml &&
+                export PATH=/tmp/$QT_DIR/bin:$PATH
+                ;
+            fi
 
-      # ios dependencies: qt, TODO: add gstreamer
-            #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/Qt5.8.0-ios-min.tar.bz2 &&
-            #tar jxf Qt5.8.0-ios-min.tar.bz2 -C /tmp &&
-            
-      - if [ "${SPEC}" = "macx-ios-clang" ]; then
-            export IOS_CCACHE_CC=`/usr/bin/xcrun -sdk iphoneos -find clang` &&
-            export IOS_CCACHE_CXX=`/usr/bin/xcrun -sdk iphoneos -find clang++` &&
-            export PATH=/tmp/Qt5.8-ios/5.8/ios/bin:$PATH &&
-            tools/patch_qt_for_xcode8.sh
-            ;
-        fi
+          # ios dependencies: qt, TODO: add gstreamer
+                #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/Qt5.8.0-ios-min.tar.bz2 &&
+                #tar jxf Qt5.8.0-ios-min.tar.bz2 -C /tmp &&
+                
+          - if [ "${SPEC}" = "macx-ios-clang" ]; then
+                export IOS_CCACHE_CC=`/usr/bin/xcrun -sdk iphoneos -find clang` &&
+                export IOS_CCACHE_CXX=`/usr/bin/xcrun -sdk iphoneos -find clang++` &&
+                export PATH=/tmp/Qt5.8-ios/5.8/ios/bin:$PATH &&
+                tools/patch_qt_for_xcode8.sh
+                ;
+            fi
 
-    before_script:
-      - cd ${TRAVIS_BUILD_DIR}
+        before_script:
+          - cd ${TRAVIS_BUILD_DIR}
 
-      # grab latest PX4 parameter and airframe metadata
-      - wget http://px4-travis.s3.amazonaws.com/Firmware/master/parameters.xml -O src/FirmwarePlugin/PX4/PX4ParameterFactMetaData.xml
-      - wget http://px4-travis.s3.amazonaws.com/Firmware/master/airframes.xml -O src/AutoPilotPlugins/PX4/AirframeFactMetaData.xml
+          # grab latest PX4 parameter and airframe metadata
+          - wget http://px4-travis.s3.amazonaws.com/Firmware/master/parameters.xml -O src/FirmwarePlugin/PX4/PX4ParameterFactMetaData.xml
+          - wget http://px4-travis.s3.amazonaws.com/Firmware/master/airframes.xml -O src/AutoPilotPlugins/PX4/AirframeFactMetaData.xml
 
-      # switch android config from installer to release if the android storepass isn't available
-      - if [[ "${SPEC}" = "android-g++" && "${CONFIG}" = "installer" && -z ${ANDROID_STOREPASS} ]]; then
-            export CONFIG=release;
-        fi
+          # switch android config from installer to release if the android storepass isn't available
+          - if [[ "${SPEC}" = "android-g++" && "${CONFIG}" = "installer" && -z ${ANDROID_STOREPASS} ]]; then
+                export CONFIG=release;
+            fi
 
-      # insert QGC version in AndroidManifest.xml
-      - if [ "${SPEC}" = "android-g++" ]; then
-            git remote set-branches origin 'master' &&
-            git fetch origin master &&
-            ./tools/update_android_version.sh;
-        fi
+          # insert QGC version in AndroidManifest.xml
+          - if [ "${SPEC}" = "android-g++" ]; then
+                git remote set-branches origin 'master' &&
+                git fetch origin master &&
+                ./tools/update_android_version.sh;
+            fi
 
-    script:
-      # run qmake
-      - mkdir ${SHADOW_BUILD_DIR} && cd ${SHADOW_BUILD_DIR}
-      - qmake -r ${TRAVIS_BUILD_DIR}/qgroundcontrol.pro CONFIG+=${CONFIG} CONFIG+=WarningsAsErrorsOn -spec ${SPEC}
+        script:
+          # run qmake
+          - mkdir ${SHADOW_BUILD_DIR} && cd ${SHADOW_BUILD_DIR}
+          - qmake -r ${TRAVIS_BUILD_DIR}/qgroundcontrol.pro CONFIG+=${CONFIG} CONFIG+=WarningsAsErrorsOn -spec ${SPEC}
 
-      # compile
-      - if [ "${SPEC}" != "macx-ios-clang" ]; then
-            make -j$JOBS;
-        else
-            xcodebuild -IDEBuildOperationMaxNumberOfConcurrentCompileTasks=$JOBS -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty -c && $(exit ${PIPESTATUS[0]});
-        fi
-      #- ccache -s
+          # compile
+          - if [ "${SPEC}" != "macx-ios-clang" ]; then
+                make -j$JOBS;
+            else
+                xcodebuild -IDEBuildOperationMaxNumberOfConcurrentCompileTasks=$JOBS -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty -c && $(exit ${PIPESTATUS[0]});
+            fi
+          #- ccache -s
 
-      # unit tests linux
-      - if [[ "${SPEC}" = "linux-g++-64" && "${CONFIG}" = "debug" ]]; then
-            mkdir -p ~/.config/QtProject/ && cp ${TRAVIS_BUILD_DIR}/test/qtlogging.ini ~/.config/QtProject/ &&
-                ./debug/qgroundcontrol-start.sh --unittest;
-        fi
+          # unit tests linux
+          - if [[ "${SPEC}" = "linux-g++-64" && "${CONFIG}" = "debug" ]]; then
+                mkdir -p ~/.config/QtProject/ && cp ${TRAVIS_BUILD_DIR}/test/qtlogging.ini ~/.config/QtProject/ &&
+                    ./debug/qgroundcontrol-start.sh --unittest;
+            fi
 
-    after_success:
-      - cd ${TRAVIS_BUILD_DIR}
+        after_success:
+          - cd ${TRAVIS_BUILD_DIR}
 
-      # master development builds to beta track
-      # tagged releases first to beta track then manually move to production
-      - GOOGLE_PLAY_PKG=org.mavlink.qgroundcontrolbeta
-      - if [ "${TRAVIS_TAG}" ]; then
-            GOOGLE_PLAY_PKG=org.mavlink.qgroundcontrol;
-        fi
-      - if [[ "${SPEC}" = "android-g++" && "${TRAVIS_PULL_REQUEST}" = "false" && "${TRAVIS_BRANCH}" = "master" ]]; then
-            pip install --user google-api-python-client PyOpenSSL &&
-            openssl aes-256-cbc -K $encrypted_25db6eb7c3fd_key -iv $encrypted_25db6eb7c3fd_iv -in android/Google_Play_Android_Developer-4432a3c4f5d1.json.enc -out android/Google_Play_Android_Developer-4432a3c4f5d1.json -d &&
-            ./tools/google_play_upload.py production ${GOOGLE_PLAY_PKG} ${SHADOW_BUILD_DIR}/release/package/QGroundControl.apk;
-        fi
+          # master development builds to beta track
+          # tagged releases first to beta track then manually move to production
+          - GOOGLE_PLAY_PKG=org.mavlink.qgroundcontrolbeta
+          - if [ "${TRAVIS_TAG}" ]; then
+                GOOGLE_PLAY_PKG=org.mavlink.qgroundcontrol;
+            fi
+          - if [[ "${SPEC}" = "android-g++" && "${TRAVIS_PULL_REQUEST}" = "false" && "${TRAVIS_BRANCH}" = "master" ]]; then
+                pip install --user google-api-python-client PyOpenSSL &&
+                openssl aes-256-cbc -K $encrypted_25db6eb7c3fd_key -iv $encrypted_25db6eb7c3fd_iv -in android/Google_Play_Android_Developer-4432a3c4f5d1.json.enc -out android/Google_Play_Android_Developer-4432a3c4f5d1.json -d &&
+                ./tools/google_play_upload.py production ${GOOGLE_PLAY_PKG} ${SHADOW_BUILD_DIR}/release/package/QGroundControl.apk;
+            fi
 
-    before_deploy:
-      # create linux appimage
-      - cd ${TRAVIS_BUILD_DIR}
-      - if [[ "${SPEC}" = "linux-g++-64" && "${CONFIG}" = "installer" ]]; then
-            ./deploy/create_linux_appimage.sh ${TRAVIS_BUILD_DIR} ${SHADOW_BUILD_DIR}/release ${SHADOW_BUILD_DIR}/release/package;
-        fi
+        before_deploy:
+          # create linux appimage
+          - cd ${TRAVIS_BUILD_DIR}
+          - if [[ "${SPEC}" = "linux-g++-64" && "${CONFIG}" = "installer" ]]; then
+                ./deploy/create_linux_appimage.sh ${TRAVIS_BUILD_DIR} ${SHADOW_BUILD_DIR}/release ${SHADOW_BUILD_DIR}/release/package;
+            fi
 
-    deploy:
-      - provider: releases
-        api_key: ${botKey} 
-        file_glob: true
-        file:
-          - ${SHADOW_BUILD_DIR}/release/package/qgroundcontrol.*
-          - ${SHADOW_BUILD_DIR}/release/package/QGroundControl.*
-        skip-cleanup: true
-        on:
-          tags: true
-          all_branches: true
-          condition: $CONFIG = installer
+        deploy:
+          - provider: releases
+            api_key: ${botKey} 
+            file_glob: true
+            file:
+              - ${SHADOW_BUILD_DIR}/release/package/qgroundcontrol.*
+              - ${SHADOW_BUILD_DIR}/release/package/QGroundControl.*
+            skip-cleanup: true
+            on:
+              tags: true
+              all_branches: true
+              condition: $CONFIG = installer
