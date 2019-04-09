@@ -20,10 +20,10 @@
                 - os: linux
                   env: SPEC=linux-g++-64 CONFIG=installer
                   sudo: required
-                #- os: linux
-                #  env: SPEC=linux-g++-64 CONFIG=debug
-                #  services: xvfb
-                #  sudo: required
+                - os: linux
+                  env: SPEC=linux-g++-64 CONFIG=debug
+                  services: xvfb
+                  sudo: required
                 - os: android
                   language: android
                   env: SPEC=android-g++ CONFIG=installer
