@@ -17,9 +17,9 @@
         matrix:
             fast_finish: true
             include:
-                #- os: linux
-                #  env: SPEC=linux-g++-64 CONFIG=installer
-                #  sudo: required
+                - os: linux
+                  env: SPEC=linux-g++-64 CONFIG=installer
+                  sudo: required
                 #- os: linux
                 #  env: SPEC=linux-g++-64 CONFIG=debug
                 #  services: xvfb
