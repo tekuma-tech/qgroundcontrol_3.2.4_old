@@ -32,6 +32,7 @@ const char* Joystick::_roverTXModeSettingsKey =         "TXMode_Rover";
 const char* Joystick::_vtolTXModeSettingsKey =          "TXMode_VTOL";
 const char* Joystick::_submarineTXModeSettingsKey =     "TXMode_Submarine";
 
+
 const char* Joystick::_rgFunctionSettingsKey[Joystick::maxFunction] = {
     "RollAxis",
     "PitchAxis",
@@ -42,6 +43,7 @@ const char* Joystick::_rgFunctionSettingsKey[Joystick::maxFunction] = {
 };
 
 int Joystick::_transmitterMode = 2;
+
 
 Joystick::Joystick(const QString& name, int axisCount, int buttonCount, int hatCount, MultiVehicleManager* multiVehicleManager)
     : _exitThread(false)
@@ -63,6 +65,7 @@ Joystick::Joystick(const QString& name, int axisCount, int buttonCount, int hatC
     , _activeVehicle(NULL)
     , _pollingStartedForCalibration(false)
     , _multiVehicleManager(multiVehicleManager)
+    , _gain(1)
 {
    qDebug()  << "Starting Joystick";
     _rgAxisValues = new int[_axisCount];
@@ -80,7 +83,11 @@ Joystick::Joystick(const QString& name, int axisCount, int buttonCount, int hatC
     _updateTXModeSettingsKey(_multiVehicleManager->activeVehicle());
     qDebug() << "Load Settings";
     _loadSettings();
-
+    if(this->name().contains("Tekuma")){
+        this->_gain = 0.5;
+        //_activeVehicle->firmwarePlugin()->factGroups()->find("APMSubInfo").value()//
+          //      ->getFact("pilot gain")->setRawValue(this->_gain * 100);
+    }
     connect(_multiVehicleManager, &MultiVehicleManager::activeVehicleChanged, this, &Joystick::_activeVehicleChanged);
 }
 
@@ -223,7 +230,6 @@ void Joystick::_loadSettings(void)
         int functionAxis;
 
         functionAxis = settings.value(_rgFunctionSettingsKey[function], -1).toInt(&convertOk);
-        qDebug() << "Joystick1::" << functionAxis;
 
         if(functionAxis >= Joystick::maxFunction){
             functionAxis = -1;
@@ -231,7 +237,6 @@ void Joystick::_loadSettings(void)
         badSettings |= !convertOk || (functionAxis == -1);
         _rgFunctionAxis[function] = functionAxis;
 
-        qDebug() << "_loadSettings function:axis:badsettings" << function << functionAxis << badSettings << convertOk;
         qCDebug(JoystickLog) << "_loadSettings function:axis:badsettings" << function << functionAxis << badSettings;
     }
 
@@ -239,13 +244,11 @@ void Joystick::_loadSettings(void)
     // Remap to stored TX mode in settings
     _remapAxes(2, _transmitterMode, _rgFunctionAxis);
 
-    for (int button=0; button<_totalButtonCount; button++) {
+    for (int button=0; button<_totalButtonCount*3; button++) {
         _rgButtonActions << settings.value(QString(_buttonActionSettingsKey).arg(button), QString()).toString();
-        qCDebug(JoystickLog) << "_loadSettings button:action" << button << _rgButtonActions[button];
     }
 
     if (badSettings) {
-        qDebug() << "Joystick loading failed";
         _calibrated = false;
         settings.setValue(_calibratedSettingsKey, false);
     }
@@ -309,7 +312,7 @@ void Joystick::_saveSettings(void)
         qDebug() << "_saveSettings name:function:axis" << _name << function << _rgFunctionSettingsKey[function];
     }
 
-    for (int button=0; button<_totalButtonCount; button++) {
+    for (int button=0; button<_totalButtonCount*3; button++) {
         settings.setValue(QString(_buttonActionSettingsKey).arg(button), _rgButtonActions[button]);
         qCDebug(JoystickLog) << "_saveSettings button:action" << button << _rgButtonActions[button];
     }
@@ -511,16 +514,16 @@ void Joystick::run(void)
             // Set up button pressed information
 
             // We only send the buttons the firmwware has reserved
-            int reservedButtonCount = _activeVehicle->manualControlReservedButtonCount();
+            int reservedButtonCount = 0;//_activeVehicle->manualControlReservedButtonCount();
             if (reservedButtonCount == -1) {
-                reservedButtonCount = _totalButtonCount;
+                reservedButtonCount = _totalButtonCount*3;
             }
 
             quint16 newButtonBits = 0;      // New set of button which are down
             quint16 buttonPressedBits = 0;  // Buttons pressed for manualControl signal
 
-            for (int buttonIndex=0; buttonIndex<_totalButtonCount; buttonIndex++) {
-                quint16 buttonBit = 1 << buttonIndex;
+            for (int buttonIndex=0; buttonIndex<_totalButtonCount*3; buttonIndex++) {
+                quint32 buttonBit = 1 << buttonIndex;
 
                 if (!_rgButtonValues[buttonIndex]) {
                     // Button up, just record it
@@ -533,6 +536,8 @@ void Joystick::run(void)
                         if (buttonIndex >= reservedButtonCount) {
                             // Button is above firmware reserved set
                             QString buttonAction =_rgButtonActions[buttonIndex];
+
+                            qCDebug(JoystickLog) << "_buttonAction:" << buttonAction;
                             if (!buttonAction.isEmpty()) {
                                 _buttonAction(buttonAction);
                             }
@@ -548,7 +553,7 @@ void Joystick::run(void)
 
             qCDebug(JoystickValuesLog) << "name:roll:pitch:yaw:throttle:lat:forward" << name() << roll << -pitch << yaw << throttle << lat << forward;
             //this is also used to send values to the ROV
-            emit manualControl(roll, -pitch, yaw, throttle, buttonPressedBits, _activeVehicle->joystickMode(), lat, forward);
+            emit manualControl(roll*this->_gain, pitch*this->_gain, yaw*this->_gain, throttle*this->_gain, buttonPressedBits, _activeVehicle->joystickMode(), lat*this->_gain, forward*this->_gain);
         }
         // Sleep, update rate of joystick is approx. 25 Hz (1000 ms / 25 = 40 ms)
         QGC::SLEEP::msleep(40);
@@ -611,7 +616,7 @@ void Joystick::stopPolling(void)
             UAS* uas = _activeVehicle->uas();
             // Neutral attitude controls
             // emit manualControl(0, 0, 0, 0.5, 0, _activeVehicle->joystickMode());
-            disconnect(this, &Joystick::manualControl,          uas, &UAS::setExternalControlSetpoint);
+            disconnect(this, &Joystick::manualControl, uas, &UAS::setExternalControlSetpoint);
             disconnect(this, &Joystick::manualControl, uas, &UAS::setExternalControlSetpoint6DOF);
         }
         // FIXME: ****
@@ -659,7 +664,6 @@ void Joystick::setFunctionAxis(AxisFunction_t function, int axis)
 
 int Joystick::getFunctionAxis(AxisFunction_t function)
 {
-    qDebug() << "Joystick4";
 
     if (function < 0 || function >= maxFunction) {
         qCWarning(JoystickLog) << "Invalid function" << function;
@@ -672,7 +676,7 @@ QStringList Joystick::actions(void)
 {
     QStringList list;
 
-    list << "Arm" << "Disarm";
+    list << "Arm" << "Disarm" << "Shift" << "Gain Increment" << "Gain Decrement";
 
     if (_activeVehicle) {
         list << _activeVehicle->flightModes();
@@ -687,8 +691,6 @@ void Joystick::setButtonAction(int button, const QString& action)
         qCWarning(JoystickLog) << "Invalid button index" << button;
         return;
     }
-
-    qDebug() << "setButtonAction" << action;
 
     _rgButtonActions[button] = action;
     _saveSettings();
@@ -708,11 +710,14 @@ QVariantList Joystick::buttonActions(void)
 {
     QVariantList list;
 
-    for (int button=0; button<_totalButtonCount; button++) {
+    for (int button=0; button<_totalButtonCount*3; button++) {
         list += QVariant::fromValue(_rgButtonActions[button]);
     }
-
     return list;
+}
+
+bool Joystick::buttonActionsConstains(const QString& search){
+    return _rgButtonActions.contains(search);
 }
 
 int Joystick::throttleMode(void)
@@ -807,19 +812,33 @@ void Joystick::stopCalibrationMode(CalibrationMode_t mode)
     }
 }
 
-void Joystick::_buttonAction(const QString& action)
-{
+void Joystick::_buttonAction(const QString& action){
+    qCDebug(JoystickLog) << "_buttonAction:" << action;
     if (!_activeVehicle || !_activeVehicle->joystickEnabled()) {
         return;
     }
 
     if (action == "Arm") {
         _activeVehicle->setArmed(true);
-    } else if (action == "Disarm") {
+    }
+    else if (action == "Disarm") {
         _activeVehicle->setArmed(false);
-    } else if (_activeVehicle->flightModes().contains(action)) {
+    }
+    else if (_activeVehicle->flightModes().contains(action)) {
         _activeVehicle->setFlightMode(action);
-    } else {
+    }
+    //this is to decrease and increase the gain for the sub with a tekuma Controller
+    else if(action == "Gain Increment" && this->name().contains("Tekuma") && this->_gain < 1){
+        this->_gain += 0.05;
+        _activeVehicle->firmwarePlugin()->factGroups()->find("APMSubInfo").value()//
+                ->getFact("pilot gain")->setRawValue(this->_gain * 100);
+    }
+    else if(action == "Gain Decrement" && this->name().contains("Tekuma") && this->_gain > 0){
+        this->_gain -= 0.05;
+        _activeVehicle->firmwarePlugin()->factGroups()->find("APMSubInfo").value()//
+                ->getFact("pilot gain")->setRawValue(this->_gain * 100);
+    }
+    else {
         qCDebug(JoystickLog) << "_buttonAction unknown action:" << action;
     }
 }
@@ -831,6 +850,6 @@ bool Joystick::_validAxis(int axis)
 
 bool Joystick::_validButton(int button)
 {
-    return button >= 0 && button < _totalButtonCount;
+    return button >= 0 && button < _totalButtonCount*3;
 }
 

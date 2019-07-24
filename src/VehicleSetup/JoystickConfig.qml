@@ -12,6 +12,7 @@ import QtQuick          2.3
 import QtQuick.Controls 1.2
 import QtQuick.Dialogs  1.2
 
+
 import QGroundControl               1.0
 import QGroundControl.Palette       1.0
 import QGroundControl.Controls      1.0
@@ -19,6 +20,7 @@ import QGroundControl.ScreenTools   1.0
 import QGroundControl.Controllers   1.0
 import QGroundControl.FactSystem    1.0
 import QGroundControl.FactControls  1.0
+
 
 /// Joystick Config
 SetupPage {
@@ -235,7 +237,7 @@ SetupPage {
                         Connections {
                             target: _activeJoystick
 
-                            onManualControl: lateraLoader.item.axisValue = lat*32768.0
+                            onManualControl: lateraLoader.item.axisValue = roll*32768.0
                         }
                     }
                     Item {
@@ -602,7 +604,7 @@ SetupPage {
 
                                 Row {
                                     spacing: ScreenTools.defaultFontPixelWidth
-                                    visible: (_activeVehicle.manualControlReservedButtonCount == -1 ? false : modelData >= _activeVehicle.manualControlReservedButtonCount) && !_activeVehicle.supportsJSButton
+                                    visible: (_activeVehicle.manualControlReservedButtonCount == -1 ? false : modelData >= _activeVehicle.manualControlReservedButtonCount) && (!_activeVehicle.supportsJSButton || (joystickManager.activeJoystickName.indexOf("Tekuma") != -1))
 
                                     property bool pressed
 
@@ -639,12 +641,30 @@ SetupPage {
                                         onActivated:            _activeJoystick.setButtonAction(modelData, textAt(index))
                                         Component.onCompleted:  currentIndex = find(_activeJoystick.buttonActions[modelData])
                                     }
+                                    QGCComboBox {
+                                        id:             buttonActionCombo2
+                                        width:          ScreenTools.defaultFontPixelWidth * 20
+                                        model:          _activeJoystick ? _activeJoystick.actions : 0
+                                        visible:        _activeJoystick.buttonActionsConstains("Shift")
+
+                                        onActivated:            _activeJoystick.setButtonAction(modelData+_activeJoystick.totalButtonCount, textAt(index))
+                                        Component.onCompleted:  currentIndex = find(_activeJoystick.buttonActions[modelData+_activeJoystick.totalButtonCount])
+                                    }
+                                    QGCComboBox {
+                                        id:             buttonActionCombo3
+                                        width:          ScreenTools.defaultFontPixelWidth * 20
+                                        model:          _activeJoystick ? _activeJoystick.actions : 0
+                                        visible:        find("Shift2") > -1 //here just incase we want a second shift
+
+                                        onActivated:            _activeJoystick.setButtonAction(modelData+_activeJoystick.totalButtonCount*2, textAt(index))
+                                        Component.onCompleted:  currentIndex = find(_activeJoystick.buttonActions[modelData+_activeJoystick.totalButtonCount*2])
+                                    }
                                 }
                             } // Repeater
 
                             Row {
                                 spacing: ScreenTools.defaultFontPixelWidth
-                                visible: _activeVehicle.supportsJSButton
+                                visible: (_activeVehicle.supportsJSButton && !(joystickManager.activeJoystickName.indexOf("Tekuma") != -1))
 
                                 QGCLabel {
                                     horizontalAlignment:    Text.AlignHCenter
@@ -669,7 +689,7 @@ SetupPage {
 
                                 Row {
                                     spacing: ScreenTools.defaultFontPixelWidth
-                                    visible: _activeVehicle.supportsJSButton
+                                    visible: _activeVehicle.supportsJSButton && !(joystickManager.activeJoystickName.indexOf("Tekuma") != -1)
 
                                     property bool pressed
 

@@ -96,6 +96,7 @@ public:
 
     QStringList actions(void);
     QVariantList buttonActions(void);
+    Q_INVOKABLE bool buttonActionsConstains(const QString& search);
 
     QString name(void) { return _name; }
 /*
@@ -221,6 +222,8 @@ protected:
 
     MultiVehicleManager*    _multiVehicleManager;
 
+    float _gain;
+
 private:
     static const char*  _rgFunctionSettingsKey[maxFunction];
 
@@ -237,6 +240,7 @@ private:
     static const char* _roverTXModeSettingsKey;
     static const char* _vtolTXModeSettingsKey;
     static const char* _submarineTXModeSettingsKey;
+
 
 private slots:
     void _activeVehicleChanged(Vehicle* activeVehicle);

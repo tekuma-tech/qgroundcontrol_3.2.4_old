@@ -24,6 +24,7 @@
 #include <cstdlib>
 
 #include "UAS.h"
+#include "ParameterManager.h"
 #include "LinkInterface.h"
 #include "QGC.h"
 #include "GAudioOutput.h"
@@ -1345,19 +1346,112 @@ void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, flo
             manualLat = lat;
             manualButtons = buttons;
             */
+
             // Store scaling values for all 3 axes
-            const float axesScaling = 1.0 * 1000.0;
+            #define RollChannel 2
+            #define PitchChannel 1
+            #define YawChannel 4
+            #define ThrustChannel 3
+            #define LatChannel 6
+            #define ForwardChannel 5
+
+            const float axesScaling = 1 * 1000.0;
             const float axesOffset = 1000.0;
             // Calculate the new commands for roll, pitch, yaw, and thrust
-            const float newRollCommand = roll * axesScaling/2  + axesOffset + 500;
+            //const float newRollCommand = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MAX").arg(1))->rawValue().toInt();//roll * axesScaling/2  + axesOffset + 500;
             // negate pitch value because pitch is negative for pitching forward but mavlink message argument is positive for forward
-            const float newPitchCommand = -pitch * axesScaling/2 + axesOffset  + 500;
-            const float newYawCommand = yaw * axesScaling/2 + axesOffset  + 500;
-            const float newThrustCommand = thrust * axesScaling + axesOffset;
-            const float newLatCommand = lat * axesScaling/2 + axesOffset  + 500;
-            const float newForwardCommand = forward * axesScaling/2 + axesOffset  + 500;
+            //const float newPitchCommand = -pitch * axesScaling/2 + axesOffset  + 500;
+            //const float newYawCommand = yaw * axesScaling/2 + axesOffset  + 500;
+            //const float newThrustCommand = thrust * axesScaling + axesOffset;
+            //const float newLatCommand = lat * axesScaling/2 + axesOffset  + 500;
+            //const float newForwardCommand = forward * axesScaling/2 + axesOffset  + 500;
 
-            //qDebug() << newRollCommand << newPitchCommand << newYawCommand << newThrustCommand;
+            //Calc for roll pwm values with device scalling
+            const float rollMax = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MAX").arg(RollChannel))->rawValue().toInt();
+            const float rollMin = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MIN").arg(RollChannel))->rawValue().toInt();
+            const float rollTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(RollChannel))->rawValue().toInt();
+            const float rollRange = (rollMax - rollMin) / 2;
+
+            float newRollCommand = rollTrim + rollRange * roll;
+            if(newRollCommand < rollMin){
+                newRollCommand = rollMin;
+            }
+            else if(newRollCommand > rollMax){
+                newRollCommand = rollMax;
+            }
+
+
+            //Calc for pitch pwm values with device scalling
+            const float pitchMax = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MAX").arg(PitchChannel))->rawValue().toInt();
+            const float pitchMin = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MIN").arg(PitchChannel))->rawValue().toInt();
+            const float pitchTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(PitchChannel))->rawValue().toInt();
+            const float pitchRange = (pitchMax - pitchMin) / 2;
+
+            float newPitchCommand = pitchTrim + pitchRange * pitch;
+            if(newPitchCommand < pitchMin){
+                newPitchCommand = pitchMin;
+            }
+            else if(newPitchCommand > pitchMax){
+                newPitchCommand = pitchMax;
+            }
+
+            //Calc for yaw pwm values with device scalling
+            const float yawMax = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MAX").arg(YawChannel))->rawValue().toInt();
+            const float yawMin = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MIN").arg(YawChannel))->rawValue().toInt();
+            const float yawTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(YawChannel))->rawValue().toInt();
+            const float yawRange = (yawMax - yawMin) / 2;
+
+            float newYawCommand = yawTrim + yawRange * yaw;
+            if(newYawCommand < yawMin){
+                newYawCommand = yawMin;
+            }
+            else if(newYawCommand > yawMax){
+                newYawCommand = yawMax;
+            }
+
+            //Calc for thrust pwm values with device scalling
+            const float thrustMax = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MAX").arg(ThrustChannel))->rawValue().toInt();
+            const float thrustMin = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MIN").arg(ThrustChannel))->rawValue().toInt();
+            const float thrustTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(ThrustChannel))->rawValue().toInt();
+            const float thrustRange = (thrustMax - thrustMin) / 2;
+
+            float newThrustCommand = thrustTrim + thrustRange * thrust;
+            if(newThrustCommand < thrustMin){
+                newThrustCommand = thrustMin;
+            }
+            else if(newThrustCommand > thrustMax){
+                newThrustCommand = thrustMax;
+            }
+
+            //Calc for lat pwm values with device scalling
+            const float latMax = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MAX").arg(LatChannel))->rawValue().toInt();
+            const float latMin = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MIN").arg(LatChannel))->rawValue().toInt();
+            const float latTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(LatChannel))->rawValue().toInt();
+            const float latRange = (latMax - latMin) / 2;
+
+            float newLatCommand = latTrim + latRange * lat;
+            if(newLatCommand < latMin){
+                newLatCommand = latMin;
+            }
+            else if(newLatCommand > latMax){
+                newLatCommand = latMax;
+            }
+
+            //Calc for forward pwm values with device scalling
+            const float forwardMax = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MAX").arg(ForwardChannel))->rawValue().toInt();
+            const float forwardMin = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MIN").arg(ForwardChannel))->rawValue().toInt();
+            const float forwardTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(ForwardChannel))->rawValue().toInt();
+            const float forwardRange = (forwardMax - forwardMin) / 2;
+
+            float newForwardCommand = forwardTrim + forwardRange * forward;
+            if(newForwardCommand < forwardMin){
+                newForwardCommand = forwardMin;
+            }
+            else if(newForwardCommand > forwardMax){
+                newForwardCommand = forwardMax;
+            }
+
+           //qDebug() << newRollCommand << newPitchCommand << newYawCommand << newThrustCommand;
 
             mavlink_msg_rc_channels_override_pack_chan(mavlink->getSystemId(),
                                                        mavlink->getComponentId(),
