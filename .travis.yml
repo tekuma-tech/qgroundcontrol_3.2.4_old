@@ -82,7 +82,7 @@
               
               # fetch entire git repo to properly determine the version
               - if [ "${CONFIG}" = "installer" ]; then
-                    cd ${TRAVIS_BUILD_DIR} && git fetch --unshallow && git fetch --tags;
+                    cd ${TRAVIS_BUILD_DIR} && git fetch --all --unshallow  && git fetch --all --tags;
                 fi
               
               # install ccache for osx/ios
