@@ -829,12 +829,12 @@ void Joystick::_buttonAction(const QString& action){
     }
     //this is to decrease and increase the gain for the sub with a tekuma Controller
     else if(action == "Gain Increment" && this->name().contains("Tekuma") && this->_gain < 1){
-        this->_gain += 0.05;
+        this->_gain += (float)0.05;
         _activeVehicle->firmwarePlugin()->factGroups()->find("APMSubInfo").value()//
                 ->getFact("pilot gain")->setRawValue(this->_gain * 100);
     }
     else if(action == "Gain Decrement" && this->name().contains("Tekuma") && this->_gain > 0){
-        this->_gain -= 0.05;
+        this->_gain -= (float)0.05;
         _activeVehicle->firmwarePlugin()->factGroups()->find("APMSubInfo").value()//
                 ->getFact("pilot gain")->setRawValue(this->_gain * 100);
     }
