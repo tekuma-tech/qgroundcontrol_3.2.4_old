@@ -1355,8 +1355,8 @@ void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, flo
             #define LatChannel 6
             #define ForwardChannel 5
 
-            const float axesScaling = 1 * 1000.0;
-            const float axesOffset = 1000.0;
+            //const float axesScaling = 1 * 1000.0;
+            //const float axesOffset = 1000.0;
             // Calculate the new commands for roll, pitch, yaw, and thrust
             //const float newRollCommand = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MAX").arg(1))->rawValue().toInt();//roll * axesScaling/2  + axesOffset + 500;
             // negate pitch value because pitch is negative for pitching forward but mavlink message argument is positive for forward
