@@ -13,6 +13,8 @@
                 - export VERBOSE=0
                 # ANDROID_STOREPASS
                 - secure: RGovyUnMw3fp/bHZi058JvANT1rYmNqrsuSYew0cIgirO6YbMHr/rsjwCm1FTYpBl8s1zgr+u2b8ftYnfnCz2YT+Aip4NWrVYpVU0FEmfytGILrnUS0pjlt8m7fU9AKR1ElOSll7yw7e1kftynN39Q321etvwbLZcXon6zz0suE=
+            git:
+                depth: false
 
             matrix:
                 fast_finish: true
@@ -82,7 +84,7 @@
               
               # fetch entire git repo to properly determine the version
               - if [ "${CONFIG}" = "installer" ]; then
-                    cd ${TRAVIS_BUILD_DIR} && git fetch --unshallow --depth=999  && git fetch --all --tags;
+                    cd ${TRAVIS_BUILD_DIR} && git fetch --unshallow && git fetch --all --tags;
                 fi
               
               # install ccache for osx/ios
