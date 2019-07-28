@@ -1168,7 +1168,7 @@ void UAS::setExternalControlSetpoint(float roll, float pitch, float yaw, float t
     }
 }
 
-void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, float thrust, quint16 buttons, int joystickMode,float lat , float forward )
+void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, float thrust, quint16 buttons, int joystickMode,float lat , float forward, float gain)
 {
     if (!_vehicle) {
         return;
@@ -1366,13 +1366,14 @@ void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, flo
             //const float newLatCommand = lat * axesScaling/2 + axesOffset  + 500;
             //const float newForwardCommand = forward * axesScaling/2 + axesOffset  + 500;
 
+
             //Calc for roll pwm values with device scalling
             const float rollMax = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MAX").arg(RollChannel))->rawValue().toInt();
             const float rollMin = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_MIN").arg(RollChannel))->rawValue().toInt();
             const float rollTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(RollChannel))->rawValue().toInt();
             const float rollRange = (rollMax - rollMin) / 2;
 
-            float newRollCommand = rollTrim + rollRange * roll;
+            float newRollCommand = rollTrim + rollRange * (roll * gain);
             if(newRollCommand < rollMin){
                 newRollCommand = rollMin;
             }
@@ -1387,7 +1388,7 @@ void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, flo
             const float pitchTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(PitchChannel))->rawValue().toInt();
             const float pitchRange = (pitchMax - pitchMin) / 2;
 
-            float newPitchCommand = pitchTrim + pitchRange * pitch;
+            float newPitchCommand = pitchTrim + pitchRange * (pitch * gain);
             if(newPitchCommand < pitchMin){
                 newPitchCommand = pitchMin;
             }
@@ -1401,7 +1402,7 @@ void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, flo
             const float yawTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(YawChannel))->rawValue().toInt();
             const float yawRange = (yawMax - yawMin) / 2;
 
-            float newYawCommand = yawTrim + yawRange * yaw;
+            float newYawCommand = yawTrim + yawRange * (yaw * gain);
             if(newYawCommand < yawMin){
                 newYawCommand = yawMin;
             }
@@ -1415,7 +1416,7 @@ void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, flo
             const float thrustTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(ThrustChannel))->rawValue().toInt();
             const float thrustRange = (thrustMax - thrustMin) / 2;
 
-            float newThrustCommand = thrustTrim + thrustRange * thrust;
+            float newThrustCommand = thrustTrim + thrustRange * ((thrust*2.0f-1.0f) * gain);
             if(newThrustCommand < thrustMin){
                 newThrustCommand = thrustMin;
             }
@@ -1429,7 +1430,7 @@ void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, flo
             const float latTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(LatChannel))->rawValue().toInt();
             const float latRange = (latMax - latMin) / 2;
 
-            float newLatCommand = latTrim + latRange * lat;
+            float newLatCommand = latTrim + latRange * (lat * gain);
             if(newLatCommand < latMin){
                 newLatCommand = latMin;
             }
@@ -1443,7 +1444,7 @@ void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, flo
             const float forwardTrim = _vehicle->parameterManager()->getParameter(-1, QStringLiteral("RC%1_TRIM").arg(ForwardChannel))->rawValue().toInt();
             const float forwardRange = (forwardMax - forwardMin) / 2;
 
-            float newForwardCommand = forwardTrim + forwardRange * forward;
+            float newForwardCommand = forwardTrim + forwardRange * (forward * gain);
             if(newForwardCommand < forwardMin){
                 newForwardCommand = forwardMin;
             }

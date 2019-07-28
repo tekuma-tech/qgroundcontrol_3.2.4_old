@@ -159,7 +159,7 @@ signals:
     ///     @param lat
     ///     @param forward
     ///     @param mode     See Vehicle::JoystickMode_t enum
-    void manualControl(float roll, float pitch, float yaw, float throttle, quint16 buttons, int joystickMmode,  float lat, float forward);
+    void manualControl(float roll, float pitch, float yaw, float throttle, quint16 buttons, int joystickMmode,  float lat, float forward, float gain);
 
     void buttonActionTriggered(int action);
 

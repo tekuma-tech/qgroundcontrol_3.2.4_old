@@ -309,7 +309,7 @@ public slots:
     void setExternalControlSetpoint(float roll, float pitch, float yaw, float thrust, quint16 buttons, int joystickMode);
 
     /** @brief Set the values for the 6dof manual control of the vehicle using RC override*/
-    void setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, float thrust, quint16 buttons, int joystickMode,float lat ,float forward);
+    void setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, float thrust, quint16 buttons, int joystickMode,float lat ,float forward, float gain);
 
     /** @brief Set the values for the 6dof manual control of the vehicle */
 #ifndef __mobile__

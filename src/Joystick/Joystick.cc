@@ -553,7 +553,9 @@ void Joystick::run(void)
 
             qCDebug(JoystickValuesLog) << "name:roll:pitch:yaw:throttle:lat:forward" << name() << roll << -pitch << yaw << throttle << lat << forward;
             //this is also used to send values to the ROV
-            emit manualControl(roll*this->_gain, pitch*this->_gain, yaw*this->_gain, throttle*this->_gain, buttonPressedBits, _activeVehicle->joystickMode(), lat*this->_gain, forward*this->_gain);
+            emit manualControl(roll, pitch, yaw, throttle, buttonPressedBits, _activeVehicle->joystickMode(), lat, forward, this->_gain);
+
+
         }
         // Sleep, update rate of joystick is approx. 25 Hz (1000 ms / 25 = 40 ms)
         QGC::SLEEP::msleep(40);
