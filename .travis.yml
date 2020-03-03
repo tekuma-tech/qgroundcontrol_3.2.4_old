@@ -1,7 +1,7 @@
             # if you update this file, please consider updating Vagrantfile too
             
             language: cpp
-            dist: trusty
+            dist: xenial
 
             env:
               global:
