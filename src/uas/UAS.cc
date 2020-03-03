@@ -1168,7 +1168,7 @@ void UAS::setExternalControlSetpoint(float roll, float pitch, float yaw, float t
     }
 }
 
-void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, float thrust, quint16 buttons, int joystickMode,float lat , float forward, float gain)
+void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, float thrust, quint16 buttons, int joystickMode, float lat , float forward, float gain)
 {
     if (!_vehicle) {
         return;
@@ -1460,7 +1460,12 @@ void UAS::setExternalControlSetpoint6DOF(float roll, float pitch, float yaw, flo
                                                        &message,
                                                        this->uasId,
                                                        MAV_COMP_ID_ALL,
-                                                       newPitchCommand,newRollCommand,newThrustCommand,newYawCommand,newForwardCommand,newLatCommand,0,0);
+                                                       newPitchCommand,newRollCommand,newThrustCommand,newYawCommand,newForwardCommand,newLatCommand,
+                                                       UINT16_MAX/*Camera Pan*/,
+                                                       UINT16_MAX/*Camera Tilt*/,
+                                                       0/*Lights 1*/,
+                                                       0/*lights 2*/,
+                                                       0/*Video Switch*/,0,0,0,0,0,0,0);
 
             /*
             // Send the MANUAL_COMMAND message
