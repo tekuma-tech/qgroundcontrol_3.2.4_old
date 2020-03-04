@@ -155,10 +155,12 @@
                     #qt57wayland qt57webchannel qt57webengine qt57websockets qt57x11extras qt57xmlpatterns &&
                     #wget -O libicu56.tar.gz "https://docs.google.com/uc?id=1uwbzpVrHBvSjJ-9c9jSF1IsFAOmEqOPq&export=download" &&
                     #sudo tar -zxvf libicu56.tar.gz -C /opt/qt57/lib/ &&
+                    #wget Qt5.7.1-linux-min.tar.gz "https://docs.google.com/uc?export=download&confirm=ab6u&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" &&
                     
 
               - if [ "${SPEC}" = "linux-g++-64" ]; then
-                    wget Qt5.7.1-linux-min.tar.gz "https://docs.google.com/uc?export=download&confirm=ab6u&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" &&
+                    pip install gdown &&
+                    gdown https://drive.google.com/uc?id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02- &&
                     sudo tar -zxvf Qt5.7.1-linux-min.tar.gz -C /tmp &&
                     export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
                     source /opt/qt57/bin/qt57-env.sh &&
