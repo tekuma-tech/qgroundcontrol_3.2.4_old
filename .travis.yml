@@ -144,7 +144,7 @@
                     
 
               - if [ "${SPEC}" = "linux-g++-64" ]; then
-                    sudo add-apt-repository ppa:beineri/opt-qt571-xenial -y &&
+                    sudo add-apt-repository ppa:beineri/opt-qt571-trusty -y &&
                     sudo apt-get update && 
                     sudo apt-get install qt57-meta-minimal qt57base &&
                     sudo apt-get install qt573d qt57canvas3d qt57charts-no-lgpl 
