@@ -143,8 +143,6 @@
                     #source /opt/qt57/bin/qt57-env.sh
                     #sudo add-apt-repository ppa:beineri/opt-qt571-xenial -y &&
                     
-
-              - if [ "${SPEC}" = "linux-g++-64" ]; then
                     #sudo add-apt-repository ppa:beineri/opt-qt571-xenial -y &&
                     #sudo apt-get update && 
                     #sudo apt-get install qt57-meta-minimal qt57base &&
@@ -157,6 +155,9 @@
                     #qt57wayland qt57webchannel qt57webengine qt57websockets qt57x11extras qt57xmlpatterns &&
                     #wget -O libicu56.tar.gz "https://docs.google.com/uc?id=1uwbzpVrHBvSjJ-9c9jSF1IsFAOmEqOPq&export=download" &&
                     #sudo tar -zxvf libicu56.tar.gz -C /opt/qt57/lib/ &&
+                    
+
+              - if [ "${SPEC}" = "linux-g++-64" ]; then
                     wget -O Qt5.7.1-linux-min.tar.bz2 "https://docs.google.com/uc?id=1pBgd_DbR4-wK_Uhv7uz6FHwO-e_ARsUd&export=download" &&
                     tar jxf Qt5.7.1-linux-min.tar.bz2 -C /tmp &&
                     export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
