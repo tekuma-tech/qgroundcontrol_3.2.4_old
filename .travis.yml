@@ -1,7 +1,7 @@
             # if you update this file, please consider updating Vagrantfile too
             
             language: cpp
-            dist: xenial
+            dist: trusty
 
             env:
               global:
@@ -74,7 +74,6 @@
                 - gstreamer1.0-tools
                 - libsdl2-dev
                 - libudev-dev
-                - libpng16-16
                 - wget
 
             cache:
