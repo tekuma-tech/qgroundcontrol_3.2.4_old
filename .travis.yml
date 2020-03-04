@@ -158,7 +158,7 @@
                     
 
               - if [ "${SPEC}" = "linux-g++-64" ]; then
-                    wget Qt5.7.1-linux-min.tar.gz "https://docs.google.com/uc?id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-&export=download" &&
+                    wget Qt5.7.1-linux-min.tar.gz "https://docs.google.com/uc?export=download&confirm=ab6u&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" &&
                     sudo tar -zxvf Qt5.7.1-linux-min.tar.gz -C /tmp &&
                     export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
                     source /opt/qt57/bin/qt57-env.sh &&
