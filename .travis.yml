@@ -63,7 +63,7 @@
             addons:
               apt:
                 sources:
-                - sourceline: 'ppa:beineri/opt-qt571-xenial'
+                - sourceline: 'ppa:beineri/opt-qt571-trusty'
                 packages:
                 - ccache
                 - espeak
