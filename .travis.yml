@@ -159,6 +159,7 @@
                     sudo tar -zxvf libicu56.tar.gz -C /opt/qt57/lib/ &&
                     export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
                     source /opt/qt57/bin/qt57-env.sh
+                    sh -e /etc/init.d/xvfb start
                     ;
                 fi
               
