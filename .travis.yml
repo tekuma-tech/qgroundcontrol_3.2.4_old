@@ -158,7 +158,8 @@
                     
                     #export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
                     #source /tmp/Qt5.7-linux/5.7/gcc_64/bin/qt57-env.sh 
-                    
+                    ## &&
+                    ##source qt-5.7.1.env
                     
                     #wget Qt5.7.1-linux-min.tar.gz "https://docs.google.com/uc?export=download&confirm=ab6u&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" &&
                     #wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" -O Qt5.7.1-linux-min.tar.gz && rm -rf /tmp/cookies.txt &&
@@ -166,13 +167,12 @@
                     
                     #wget https
 
-              - if [ "${SPEC}" = "linux-g++-64" ]; then
-                    wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer &&
-                    wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt &&
-                    bash install-qt 5.7.1 &&
-                    source qt-5.7.1.env
-                    ;
-                fi
+              #- if [ "${SPEC}" = "linux-g++-64" ]; then
+               #     wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer &&
+                #    wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt &&
+                 #   bash install-qt 5.7.1
+                  #  ;
+               # fi
               
               #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/gstreamer-1.0-android-armv7-1.5.2.tar.bz2 &&
               
