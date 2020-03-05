@@ -157,14 +157,15 @@
                     #sudo tar -zxvf libicu56.tar.gz -C /opt/qt57/lib/ &&
                     #wget Qt5.7.1-linux-min.tar.gz "https://docs.google.com/uc?export=download&confirm=ab6u&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" &&
                     
-
+                    #source /opt/qt57/bin/qt57-env.sh &&
+                    #export DISPLAY=:99.0 &&
+                    #sh -e /etc/init.d/xvfb start
+                    
+                    
               - if [ "${SPEC}" = "linux-g++-64" ]; then
                     wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" -O Qt5.7.1-linux-min.tar.gz && rm -rf /tmp/cookies.txt &&
                     sudo tar -zxvf Qt5.7.1-linux-min.tar.gz -C /tmp &&
-                    export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
-                    source /opt/qt57/bin/qt57-env.sh &&
-                    export DISPLAY=:99.0 &&
-                    sh -e /etc/init.d/xvfb start
+                    export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH 
                     ;
                 fi
               
