@@ -167,12 +167,13 @@
                     
                     #wget https
 
-              #- if [ "${SPEC}" = "linux-g++-64" ]; then
-               #     wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer &&
-                #    wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt &&
-                 #   bash install-qt 5.7.1
-                  #  ;
-               # fi
+              - if [ "${SPEC}" = "linux-g++-64" ]; then
+                    wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer &&
+                    wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt &&
+                    bash install-qt 5.7.1 &&
+                    export PATH=$PWD/5.8/gcc_64/bin:$PATH
+                    ;
+                fi
               
               #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/gstreamer-1.0-android-armv7-1.5.2.tar.bz2 &&
               
