@@ -168,10 +168,11 @@
                     #wget https
 
               - if [ "${SPEC}" = "linux-g++-64" ]; then
-                    wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer &&
-                    wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt &&
-                    bash install-qt 5.7.1 &&
-                    export PATH=$PWD/5.8/gcc_64/bin:$PATH
+                    wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer && 
+                    sudo mv extract-qt-installer /bin && 
+                    sudo chmod +x /bin/extract-qt-installer && 
+                    wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt && 
+                    ash install-qt 5.7.1
                     ;
                 fi
               
