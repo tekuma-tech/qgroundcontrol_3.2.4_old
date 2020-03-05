@@ -175,7 +175,7 @@
                     export PATH=$PATH:$PWD &&
                     QT_CI_DOWNLOADER="wget -c -nv -N" install-qt 5.7.1 &&
                     source qt-5.7.1.env &&
-                    echo qtInstall &&
+                    echo qtInstall 
                     ;
                 fi
               
