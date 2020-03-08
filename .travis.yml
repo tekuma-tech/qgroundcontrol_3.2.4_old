@@ -168,14 +168,11 @@
                     #wget https
 
               - if [ "${SPEC}" = "linux-g++-64" ]; then
-                    curl -L https://raw.githubusercontent.com/benlau/qtci/master/recipes/install-qt --output install-qt &&
-                    curl -L https://raw.githubusercontent.com/benlau/qtci/master/bin/extract-qt-installer --output extract-qt-installer &&
-                    chmod +x install-qt &&
-                    chmod +x extract-qt-installer &&
-                    export PATH=$PATH:$PWD &&
-                    QT_CI_DOWNLOADER="wget -c -nv -N" install-qt 5.7.1 &&
-                    source qt-5.7.1.env &&
-                    echo qtInstall 
+                    wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer && 
+                    sudo chmod +x extract-qt-installer && 
+                    wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt && 
+                    sudo chmod +x install-qt && 
+                    bash install-qt 5.7.1
                     ;
                 fi
               
