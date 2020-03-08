@@ -165,13 +165,14 @@
                     #wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" -O Qt5.7.1-linux-min.tar.gz && rm -rf /tmp/cookies.txt &&
                     #sudo tar -zxvf Qt5.7.1-linux-min.tar.gz -C /tmp &&
                     #wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt && 
-                    #wget -q https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-linux-x64-5.7.1.run &&
-                    #extract-qt-installer qt-opensource-linux-x64-5.7.1.run $PWD/Qt
-                    
+                    #
               - if [ "${SPEC}" = "linux-g++-64" ]; then
                     git clone https://github.com/benlau/qtci.git &&
                     source qtci/path.env &&
-                    install-qt 5.13.0
+                    wget -q https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-linux-x64-5.7.1.run &&
+                    echo QT_CI_LOGIN &&
+                    extract-qt-installer qt-opensource-linux-x64-5.7.1.run $PWD/Qt &&
+                    source qt-5.7.1.env
                     ;
                 fi
               
