@@ -167,6 +167,8 @@
                     #wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt && 
                     
               - if [ "${SPEC}" = "linux-g++-64" ]; then
+                    export QT_CI_LOGIN=qt_login &&
+                    export QT_CI_PASSWORD=qt_password &&
                     wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer && 
                     sudo mv extract-qt-installer /bin && 
                     sudo chmod +x /bin/extract-qt-installer && 
