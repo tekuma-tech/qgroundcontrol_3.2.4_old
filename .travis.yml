@@ -170,7 +170,7 @@
                     git clone https://github.com/benlau/qtci.git &&
                     source qtci/path.env &&
                     wget -q https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-linux-x64-5.7.1.run &&
-                    export QT_CI_LOGIN="freezerohmatic" &&
+                    export QT_CI_LOGIN='freezerohmatic' &&
                     extract-qt-installer qt-opensource-linux-x64-5.7.1.run $PWD/Qt
                     ;
                 fi
