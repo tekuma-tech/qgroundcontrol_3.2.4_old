@@ -169,7 +169,8 @@
               - if [ "${SPEC}" = "linux-g++-64" ]; then
                     git clone https://github.com/benlau/qtci.git &&
                     source qtci/path.env &&
-                    install-qt 5.7.1
+                    wget https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-linux-x64-5.7.1.run &&
+                    extract-qt-installer qt-opensource-linux-x64-5.7.1.run
                     ;
                 fi
               
