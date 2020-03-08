@@ -171,7 +171,7 @@
               - if [ "${SPEC}" = "linux-g++-64" ]; then
                     git clone https://github.com/benlau/qtci.git &&
                     source qtci/path.env &&
-                    install-qt-online 5.7.1
+                    install-qt 5.13.0
                     ;
                 fi
               
