@@ -171,7 +171,7 @@
                     source qtci/path.env &&
                     wget -q https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-linux-x64-5.7.1.run &&
                     echo ${botKey} ${Qt_Id} &&
-                    export QT_CI_LOGIN = ${Qt_Id} &&
+                    export QT_CI_LOGIN=${Qt_Id} &&
                     echo QT_CI_LOGIN &&
                     extract-qt-installer qt-opensource-linux-x64-5.7.1.run $PWD/Qt &&
                     source qt-5.7.1.env
