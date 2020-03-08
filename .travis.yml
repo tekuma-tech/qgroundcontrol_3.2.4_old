@@ -167,12 +167,12 @@
                     #wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt && 
                     
               - if [ "${SPEC}" = "linux-g++-64" ]; then
-                    wget -O extract-qt-installer https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer && 
-                    sudo chmod +x extract-qt-installer && 
+                    wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer && 
+                    sudo mv extract-qt-installer /bin && 
+                    sudo chmod +x /bin/extract-qt-installer && 
                     wget -O install-qt "https://docs.google.com/uc?export=download&id=1Mhwfgj-Rs8V1onD2EqWo3cTz7sc6ahKs" &&
-                    sudo chmod +x install-qt && 
                     ls &&
-                    bash install-qt 5.7.1
+                    sudo bash install-qt 5.7.1   
                     ;
                 fi
               
