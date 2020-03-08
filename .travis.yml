@@ -166,22 +166,20 @@
                     #sudo tar -zxvf Qt5.7.1-linux-min.tar.gz -C /tmp &&
                     #wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt && 
                     
-              #- if [ "${SPEC}" = "linux-g++-64" ]; then
-              #      wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer && 
+              - if [ "${SPEC}" = "linux-g++-64" ]; then
+                    git clone https://github.com/benlau/qtci.git &&
+                    source qtci/path.env &&
+                    install-qt 5.7.1
+                    ;
+                fi
+              
+                #    
+              #wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer && 
               #      sudo mv extract-qt-installer /bin && 
               #      sudo chmod +x /bin/extract-qt-installer && 
               #      wget -O install-qt "https://docs.google.com/uc?export=download&id=1Mhwfgj-Rs8V1onD2EqWo3cTz7sc6ahKs" &&
               #      sudo bash install-qt 5.7.1   
               #      ;
-              #  fi
-              
-              - if [ "${SPEC}" = "linux-g++-64" ]; then
-                    git clone https://github.com/benlau/qtci.git &&
-                    source qtci/path.env #Add qtci/bin and qtci/recipes to $PATH &&
-                    install-qt 5.7.1
-                    ;
-                fi
-              
               #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/gstreamer-1.0-android-armv7-1.5.2.tar.bz2 &&
               
                       #wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/dependencies/Qt5.7.1-android-min.tar.bz2 &&
