@@ -164,13 +164,12 @@
                     #wget Qt5.7.1-linux-min.tar.gz "https://docs.google.com/uc?export=download&confirm=ab6u&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" &&
                     #wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" -O Qt5.7.1-linux-min.tar.gz && rm -rf /tmp/cookies.txt &&
                     #sudo tar -zxvf Qt5.7.1-linux-min.tar.gz -C /tmp &&
+                    #wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt && 
                     
-                    #wget https
-
               - if [ "${SPEC}" = "linux-g++-64" ]; then
                     wget https://raw.githubusercontent.com/van9konst/qtci/master/bin/extract-qt-installer && 
                     sudo chmod +x extract-qt-installer && 
-                    wget https://raw.githubusercontent.com/van9konst/qtci/master/recipes/install-qt && 
+                    wget install-qt "https://docs.google.com/uc?export=download&id=1Mhwfgj-Rs8V1onD2EqWo3cTz7sc6ahKs" &&
                     sudo chmod +x install-qt && 
                     bash install-qt 5.7.1
                     ;
