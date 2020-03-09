@@ -172,6 +172,7 @@
                     ls &&
                     ls Qt5.7-linux &&
                     export PATH=$PWD/Qt5.7-linux/5.7/gcc_64/bin:$PATH 
+                    source Qt5.7-linux/5.7/gcc_64/bin/qt57-env.sh 
                     ;
                 fi
               
