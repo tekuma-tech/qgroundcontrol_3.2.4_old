@@ -168,7 +168,7 @@
                     #
               - if [ "${SPEC}" = "linux-g++-64" ]; then
                     wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies 'https://docs.google.com/uc?export=download&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" -O Qt5.7.1-linux-min.tar.gz && rm -rf /tmp/cookies.txt &&
-                    sudo tar -zxvf Qt5.7.1-linux-min.tar.gz -C /tmp
+                    sudo tar -zxvf Qt5.7.1-linux-min.tar.gz
                     export PATH=$PWD/tmp/5.7/gcc_64/bin:$PATH
                     ;
                 fi
