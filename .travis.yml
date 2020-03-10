@@ -109,10 +109,10 @@
                #linux dependencies: qt
                #wget -q --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies 'https://docs.google.com/uc?export=download&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" -O Qt5.7.1-linux-min.tar.gz && rm -rf /tmp/cookies.txt &&
                #tar -zxf Qt5.7.1-linux-min.tar.gz -C /tmp &&
-                    
+                    https://drive.google.com/file/d/1W4QXkMcvqsKPM4Had5ohHLdRwRyWj91m/view?usp=sharing
             - if [ "${SPEC}" = "linux-g++-64" ]; then
-                    wget -q --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies 'https://docs.google.com/uc?export=download&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1GdQ2NPVOIR8uZWvM7b7BuR-IC987n02-" -O Qt5.7.1-linux-min.tar.gz && rm -rf /tmp/cookies.txt &&
-                    tar zxf Qt5.7.1-linux-min.tar.gz -C /tmp &&
+                    wget -q --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies 'https://docs.google.com/uc?export=download&id=1W4QXkMcvqsKPM4Had5ohHLdRwRyWj91m' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1W4QXkMcvqsKPM4Had5ohHLdRwRyWj91m" -O Qt5.7.1-linux-min.tar.bz2 && rm -rf /tmp/cookies.txt &&
+                    tar jxf Qt5.7.1-linux-min.tar.gz -C /tmp &&
                     export PATH=/tmp/Qt5.7-linux/5.7/gcc_64/bin:$PATH
                     ;
                 fi
