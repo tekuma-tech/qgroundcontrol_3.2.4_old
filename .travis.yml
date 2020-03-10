@@ -173,7 +173,8 @@
                     echo ${PATH}  &&
                     export DISPLAY=:99.0 &&
                     sh -e /etc/init.d/xvfb start &&
-                    ls Qt5.7-linux/5.7/gcc_64/bin
+                    ls &&
+                    ls Qt5.7-linux
                     ;
                 fi
               
