@@ -171,6 +171,7 @@
                     sudo tar -zxf Qt5.7.1-linux-min.tar.gz &&
                     export PATH=$PWD/Qt5.7-linux/5.7/gcc_64/bin:$PATH &&
                     echo ${PATH}  &&
+                    pwd &&
                     ls Qt5.7-linux/5.7/gcc_64/bin
                     ;
                 fi
