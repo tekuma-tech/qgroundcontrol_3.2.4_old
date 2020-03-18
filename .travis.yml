@@ -178,10 +178,10 @@
               - if [[ "${SPEC}" = "linux-g++-64" && "${CONFIG}" = "installer" ]]; then
                     ./deploy/create_linux_appimage.sh ${TRAVIS_BUILD_DIR} ${SHADOW_BUILD_DIR}/release ${SHADOW_BUILD_DIR}/release/package;
                 fi
-
+            #api_key: ${botKey} 
+                
             deploy:
               - provider: releases
-                api_key: ${botKey} 
                 file_glob: true
                 file:
                   - ${SHADOW_BUILD_DIR}/release/package/qgroundcontrol.*
