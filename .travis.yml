@@ -111,7 +111,12 @@
                #tar -zxf Qt5.7.1-linux-min.tar.gz -C /tmp &&
                 #    https://drive.google.com/file/d/1W4QXkMcvqsKPM4Had5ohHLdRwRyWj91m/view?usp=sharing
                 #https://drive.google.com/file/d/1q-3p9RaJK_tTkF-jBGeLHCq07c9CVu32/view?usp=sharing
-
+            
+            #to prevent the two builds conflicting with the other with the download, delay the debug compile to prevent this
+            #its an odd bug but it seems google will send two different large download requests the same key then make it invalid if made in a short timeframe
+            - if [ "${SPEC}" = "linux-g++-64" && "${CONFIG}" = "debug"]; then
+                sleep 10;
+                fi
             - if [ "${SPEC}" = "linux-g++-64" ]; then
                     wget -q --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies 'https://docs.google.com/uc?export=download&id=1q-3p9RaJK_tTkF-jBGeLHCq07c9CVu32' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1q-3p9RaJK_tTkF-jBGeLHCq07c9CVu32" -O Qt5.7.1-linux-min.tar.bz2 && rm -rf /tmp/cookies.txt &&
                     tar jxf Qt5.7.1-linux-min.tar.bz2 -C /tmp &&
